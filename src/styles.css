@@ -266,6 +266,52 @@
     animation: rotate-border 3s linear infinite;
   }
 
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+  
+  .animate-marquee {
+    animation: marquee 40s linear infinite;
+  }
+
+  .neon-border-moving {
+    position: relative;
+    border-radius: 1.5rem;
+    overflow: hidden;
+  }
+
+  .neon-border-moving::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent,
+      rgba(0, 243, 255, 0.3),
+      rgba(0, 243, 255, 1),
+      transparent 30%
+    );
+    animation: rotate-neon 4s linear infinite;
+    z-index: 0;
+  }
+
+  .neon-border-moving::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    background: var(--background);
+    border-radius: calc(1.5rem - 1px);
+    z-index: 1;
+  }
+
+  @keyframes rotate-neon {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
   .neon-particles {
     position: absolute;
     inset: 0;

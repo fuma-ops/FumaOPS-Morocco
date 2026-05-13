@@ -96,8 +96,9 @@ export function Header() {
 
 export function Footer() {
   return (
-    <footer className="mt-24 sm:mt-32 border-t border-white/10">
-      <div className="mx-auto max-w-7xl px-6 py-12 grid sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <footer className="mt-24 sm:mt-32 border-t border-white/10 bg-background/80 backdrop-blur-md relative overflow-hidden">
+      <div className="absolute inset-0 bg-white/[0.02] -z-10" />
+      <div className="mx-auto max-w-7xl px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-8 relative z-10">
         <div>
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
@@ -125,6 +126,19 @@ export function Footer() {
                 </Link>
               </li>
             ))}
+          </ul>
+        </div>
+        <div>
+          <h4 className="text-sm font-semibold mb-3">Tarifs</h4>
+          <ul className="space-y-3 text-sm text-muted-foreground">
+            <li>
+              <span className="text-foreground font-medium block">Site Vitrine</span>
+              <span className="text-xs">0 DH/mois · Payez 2000 DH</span>
+            </li>
+            <li>
+              <span className="text-foreground font-medium block">Site E-commerce</span>
+              <span className="text-xs">À partir de 2000 DH · WhatsApp Ready</span>
+            </li>
           </ul>
         </div>
         <div>

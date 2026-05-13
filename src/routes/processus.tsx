@@ -15,20 +15,48 @@ export const Route = createFileRoute("/processus")({
 });
 
 const steps = [
-  { n: "01", t: "Contact", d: "Tu nous parles de ton activité et de tes besoins." },
+  {
+    n: "01",
+    t: "Contact",
+    d: "Tu nous parles de ton activité et de tes besoins.",
+    ar_t: "HDER M3ana",
+    ar_d: "عاود لينا على الخدمة ديالك و شنو محتاج باش نفهمو مشروعك.",
+  },
   {
     n: "02",
     t: "Devis & Prix",
     d: "On propose un tarif précis selon le besoin (à partir de 2000 DH).",
+    ar_t: "التمن والوقت",
+    ar_d: "كنعطيوك تمن مناسب على حساب لخدمة اللي بغيتي (كيبدا من 2000 درهم).",
   },
-  { n: "03", t: "Acompte 50%", d: "Paiement de la moitié pour lancer la machine." },
-  { n: "04", t: "Design & Développement", d: "Création du site sur mesure en 3 jours top chrono." },
+  {
+    n: "03",
+    t: "Acompte 50%",
+    d: "Paiement de la moitié pour lancer la machine.",
+    ar_t: "سبق النص",
+    ar_d: "كتخلص النص باش نبداو نخدمو على السيت ديالك.",
+  },
+  {
+    n: "04",
+    t: "Design & Développement",
+    d: "Création du site sur mesure en 3 jours top chrono.",
+    ar_t: "الخدمة و الديزاين",
+    ar_d: "كنصاوبو ليك سيت واعر وخفيف فـ 3 أيام طوب كرونو.",
+  },
   {
     n: "05",
     t: "Solde & Livraison",
     d: "Tu valides le travail, paies les 50% restants et reçois l'accès complet.",
+    ar_t: "كمل الخلاص والوفا",
+    ar_d: "كتشوف الخدمة، كتخلص اللي بقى وكتاخد السيت ديالك واجد.",
   },
-  { n: "06", t: "Lancement", d: "Go ! Accompagnement de 30 jours et début des ventes." },
+  {
+    n: "06",
+    t: "Lancement",
+    d: "Go ! Accompagnement de 30 jours et début des ventes.",
+    ar_t: "بدا تبيع وتوكل",
+    ar_d: "كنطلقو السيت و كنبقاو معاك 30 يوم باش تبدا تبيع وتخدم مزيان.",
+  },
 ];
 
 function Processus() {
@@ -47,6 +75,9 @@ function Processus() {
         <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
           Du premier contact au lancement, on t'accompagne à chaque étape.
         </p>
+        <p className="mt-2 text-sm sm:text-base font-bold gradient-text" dir="rtl">
+          من الهضرة لولة حتى كطلق السيت، حنا معاك فكل خطوة.
+        </p>
       </section>
 
       <section className="mx-auto max-w-5xl px-5 sm:px-6 py-8 sm:py-10">
@@ -64,7 +95,16 @@ function Processus() {
                       {s.n}
                     </div>
                     <h3 className="mt-2 text-xl sm:text-2xl font-bold">{s.t}</h3>
+                    <p
+                      className="mt-1 text-xs text-[var(--neon)] font-bold uppercase tracking-wider"
+                      dir="rtl"
+                    >
+                      {s.ar_t}
+                    </p>
                     <p className="mt-2 text-sm text-muted-foreground">{s.d}</p>
+                    <p className="mt-1 text-sm text-muted-foreground font-medium" dir="rtl">
+                      {s.ar_d}
+                    </p>
                   </div>
                 </div>
                 <div className="absolute left-6 sm:left-8 md:left-1/2 -translate-x-1/2 top-6 sm:top-8 h-4 w-4 rounded-full gradient-primary glow animate-pulse-glow" />

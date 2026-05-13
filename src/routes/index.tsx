@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/Layout";
+import { PROJECTS } from "@/lib/constants";
 import {
   Check,
   Zap,
@@ -50,17 +51,19 @@ function Home() {
             <div className="relative animate-scale-in block lg:hidden w-full max-w-md mx-auto mt-10 mb-4">
               <div className="absolute -inset-10 bg-[var(--gradient-hero)] blur-3xl opacity-60" />
               <div className="relative animate-float">
-                <div className="relative rounded-3xl overflow-hidden neon-border glow">
-                  <img
-                    src="/hero-new.jpg"
-                    alt="Dashboard e-commerce FumaOPS"
-                    width={1536}
-                    height={1024}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-auto"
-                  />
+                <div className="relative neon-border-moving glow z-10">
+                  <div className="relative z-10 rounded-3xl overflow-hidden">
+                    <img
+                      src="/hero-new.jpg"
+                      alt="Dashboard e-commerce FumaOPS"
+                      width={1536}
+                      height={1024}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-auto"
+                    />
+                  </div>
                 </div>
-                <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass rounded-2xl p-3 sm:p-4 max-w-[150px] sm:max-w-[200px] glow-electric animate-fade-up delay-300">
+                <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass rounded-2xl p-3 sm:p-4 max-w-[150px] sm:max-w-[200px] glow-electric animate-fade-up delay-300 z-30">
                   <div className="flex items-center gap-2">
                     <ShoppingBag className="h-4 sm:h-5 w-4 sm:w-5 text-[var(--electric)]" />
                     <span className="text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
@@ -69,7 +72,7 @@ function Home() {
                   </div>
                   <div className="mt-1 font-display font-bold text-sm sm:text-base">+ 1 250 DH</div>
                 </div>
-                <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 glass rounded-2xl p-3 sm:p-4 glow animate-fade-up delay-500 max-w-[150px] sm:max-w-none">
+                <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 glass rounded-2xl p-3 sm:p-4 glow animate-fade-up delay-500 max-w-[150px] sm:max-w-none z-30">
                   <div className="flex items-center gap-2">
                     <BarChart3 className="h-4 sm:h-5 w-4 sm:w-5 text-[var(--neon)]" />
                     <span className="text-[10px] sm:text-xs text-muted-foreground whitespace-nowrap">
@@ -136,17 +139,19 @@ function Home() {
           <div className="relative animate-scale-in hidden lg:block">
             <div className="absolute -inset-10 bg-[var(--gradient-hero)] blur-3xl opacity-60" />
             <div className="relative animate-float">
-              <div className="relative rounded-3xl overflow-hidden neon-border glow">
-                <img
-                  src="/hero-new.jpg"
-                  alt="Dashboard e-commerce FumaOPS"
-                  width={1536}
-                  height={1024}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-auto"
-                />
+              <div className="relative neon-border-moving glow z-10">
+                <div className="relative z-10 rounded-3xl overflow-hidden">
+                  <img
+                    src="/hero-new.jpg"
+                    alt="Dashboard e-commerce FumaOPS"
+                    width={1536}
+                    height={1024}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-auto"
+                  />
+                </div>
               </div>
-              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass rounded-2xl p-3 sm:p-4 max-w-[180px] sm:max-w-[200px] glow-electric animate-fade-up delay-300">
+              <div className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 glass rounded-2xl p-3 sm:p-4 max-w-[180px] sm:max-w-[200px] glow-electric animate-fade-up delay-300 z-30">
                 <div className="flex items-center gap-2">
                   <ShoppingBag className="h-4 sm:h-5 w-4 sm:w-5 text-[var(--electric)]" />
                   <span className="text-[10px] sm:text-xs text-muted-foreground">
@@ -155,7 +160,7 @@ function Home() {
                 </div>
                 <div className="mt-1 font-display font-bold text-sm sm:text-base">+ 1 250 DH</div>
               </div>
-              <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 glass rounded-2xl p-3 sm:p-4 glow animate-fade-up delay-500">
+              <div className="absolute -top-4 -right-4 sm:-top-6 sm:-right-6 glass rounded-2xl p-3 sm:p-4 glow animate-fade-up delay-500 z-30">
                 <div className="flex items-center gap-2">
                   <BarChart3 className="h-4 sm:h-5 w-4 sm:w-5 text-[var(--neon)]" />
                   <span className="text-[10px] sm:text-xs text-muted-foreground">
@@ -218,16 +223,18 @@ function Home() {
           ].map((f, i) => (
             <div
               key={i}
-              className="glass rounded-3xl p-6 hover-lift hover:glow transition-all group"
+              className="group relative neon-border-moving glow hover-lift transition-all"
             >
-              <div className="h-11 w-11 rounded-xl gradient-primary flex items-center justify-center icon-pop glow">
-                <Check className="h-5 w-5 text-white" />
+              <div className="relative z-10 p-6 h-full">
+                <div className="h-11 w-11 rounded-xl gradient-primary flex items-center justify-center icon-pop glow">
+                  <Check className="h-5 w-5 text-white" />
+                </div>
+                <h3 className="mt-4 text-xl font-bold">{f.t}</h3>
+                <p className="mt-1 text-sm text-[var(--neon)]" dir="rtl">
+                  {f.ar}
+                </p>
+                <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.d}</p>
               </div>
-              <h3 className="mt-4 text-xl font-bold">{f.t}</h3>
-              <p className="mt-1 text-sm text-[var(--neon)]" dir="rtl">
-                {f.ar}
-              </p>
-              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{f.d}</p>
             </div>
           ))}
         </div>
@@ -263,6 +270,61 @@ function Home() {
                 <MessageCircle className="h-4 w-4 group-hover:rotate-12 transition-transform" />{" "}
                 WhatsApp direct
               </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CLIENTS / TRUSTED BY (Smaller & Below CTA) */}
+      <section className="border-t border-white/5 bg-white/[0.01] py-4 sm:py-6 overflow-hidden mt-8">
+        <div className="mx-auto max-w-7xl px-5 sm:px-6">
+          <p className="text-center text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-widest mb-4">
+            Ils nous font confiance /{" "}
+            <span dir="rtl" className="font-bold">
+              لي كيقوا فينا
+            </span>
+          </p>
+          <div className="relative flex overflow-hidden">
+            <div className="flex animate-marquee shrink-0 whitespace-nowrap gap-6 sm:gap-12 items-center">
+              {PROJECTS.map((project) => (
+                <div
+                  key={project.id}
+                  className="flex items-center gap-2 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                >
+                  <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full overflow-hidden neon-border">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.name}
+                      className="h-full w-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <span className="text-xs sm:text-sm font-display font-bold tracking-tight text-white/50">
+                    {project.name.toUpperCase()}
+                  </span>
+                </div>
+              ))}
+            </div>
+            {/* DUPLICATE FOR SEAMLESS LOOP */}
+            <div className="flex animate-marquee shrink-0 whitespace-nowrap gap-6 sm:gap-12 items-center ml-6 sm:ml-12">
+              {PROJECTS.map((project) => (
+                <div
+                  key={`${project.id}-clone`}
+                  className="flex items-center gap-2 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
+                >
+                  <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-full overflow-hidden neon-border">
+                    <img
+                      src={project.imageUrl}
+                      alt={project.name}
+                      className="h-full w-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+                  <span className="text-xs sm:text-sm font-display font-bold tracking-tight text-white/50">
+                    {project.name.toUpperCase()}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

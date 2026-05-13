@@ -30,7 +30,13 @@ function Portfolio() {
           Nos <span className="gradient-text">réalisations</span>
         </h1>
         <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-          Des sites web conçus pour générer des ventes.
+          Des sites web conçus pour des{" "}
+          <span className="text-foreground font-medium">small businesses au Maroc</span> avec notre
+          solution <span className="text-[var(--neon)] font-bold">0DH/mois</span> pour générer des
+          ventes.
+        </p>
+        <p className="mt-2 text-sm sm:text-base font-bold gradient-text" dir="rtl">
+          سيتات واعرين للشركات الصغرى فالمغرب بـ 0 درهم للشهر باش تبيع كثر 🚀
         </p>
       </section>
 
@@ -42,9 +48,9 @@ function Portfolio() {
               target={p.projectUrl ? "_blank" : "_self"}
               rel={p.projectUrl ? "noopener noreferrer" : ""}
               key={p.id}
-              className={`group relative overflow-hidden rounded-3xl glass hover-lift hover:glow transition-all animate-fade-up delay-${((i % 5) + 1) * 100}`}
+              className={`group relative neon-border-moving glow hover-lift transition-all animate-fade-up delay-${((i % 5) + 1) * 100}`}
             >
-              <div className="aspect-square overflow-hidden bg-white/5">
+              <div className="relative z-10 aspect-square overflow-hidden bg-white/5">
                 <img
                   src={p.imageUrl.replace(/^\.\.?\/assets\//, "/")}
                   alt={p.name}
@@ -55,8 +61,8 @@ function Portfolio() {
                   className="h-full w-full object-cover object-top group-hover:scale-110 transition-transform duration-700"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 translate-y-2 group-hover:translate-y-0 transition-transform">
+              <div className="absolute inset-0 z-20 bg-gradient-to-t from-background via-background/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-5 sm:p-6 translate-y-2 group-hover:translate-y-0 transition-transform z-30">
                 <p className="text-[10px] sm:text-xs uppercase tracking-wider text-[var(--neon)]">
                   {p.category}
                 </p>
