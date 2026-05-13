@@ -19,7 +19,7 @@ const steps = [
     n: "01",
     t: "Contact",
     d: "Tu nous parles de ton activité et de tes besoins.",
-    ar_t: "HDER M3ana",
+    ar_t: "هضر معانا",
     ar_d: "عاود لينا على الخدمة ديالك و شنو محتاج باش نفهمو مشروعك.",
   },
   {

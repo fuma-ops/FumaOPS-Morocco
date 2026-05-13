@@ -281,7 +281,7 @@ function Home() {
           <p className="text-center text-[10px] sm:text-xs font-medium text-muted-foreground uppercase tracking-widest mb-4">
             Ils nous font confiance /{" "}
             <span dir="rtl" className="font-bold">
-              لي كيقوا فينا
+              ناس تاقو فينا
             </span>
           </p>
           <div className="relative flex overflow-hidden">
