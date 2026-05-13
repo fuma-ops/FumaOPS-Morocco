@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Portfolio Project",
+      "description": "A project in the agency portfolio",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "category": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "projectUrl": { "type": "string" },
+        "createdAt": { "type": "integer" },
+        "updatedAt": { "type": "integer" }
+      },
+      "required": ["name", "category", "imageUrl", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/portfolio/{projectId}": {
+      "schema": "Project",
+      "description": "Collection of portfolio projects"
+    }
+  }
+}
