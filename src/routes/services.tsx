@@ -7,6 +7,8 @@ import {
   MessageCircle,
   Smartphone,
   BarChart3,
+  Search,
+  LineChart,
 } from "lucide-react";
 
 export const Route = createFileRoute("/services")({
@@ -60,6 +62,18 @@ const services = [
     ar: "إحصائيات مفصلة",
     d: "Statistiques en un coup d'œil. KPI, top clients, top produits — pour piloter ton commerce.",
   },
+  {
+    icon: Search,
+    t: "Référencement Google (SEO)",
+    d: "Faites apparaître votre site en 1ère page Google. On s'occupe de tout : optimisation, mots-clés, et articles blog pour attirer des clients automatiquement.",
+    badge: "À partir de 500 DH",
+  },
+  {
+    icon: LineChart,
+    t: "Statistiques & Suivi de Trafic",
+    d: "Sachez exactement combien de visiteurs viennent sur votre site, d'où ils viennent et ce qu'ils font. Tableau de bord simple et clair.",
+    badge: "Inclus dans chaque site",
+  },
 ];
 
 function Services() {
@@ -89,7 +103,12 @@ function Services() {
             <div className="h-12 w-12 rounded-2xl gradient-primary flex items-center justify-center icon-pop glow">
               <s.icon className="h-6 w-6 text-white" />
             </div>
-            <h3 className="mt-5 text-xl font-bold">{s.t}</h3>
+            {s.badge && (
+              <div className="mt-5 inline-flex items-center rounded-full bg-[var(--electric)]/10 px-2.5 py-1 text-xs font-semibold text-[var(--electric)] border border-[var(--electric)]/20 shadow-[0_0_15px_-3px_rgba(var(--electric-rgb),0.3)]">
+                {s.badge}
+              </div>
+            )}
+            <h3 className={`font-bold ${s.badge ? "mt-3 text-xl" : "mt-5 text-xl"}`}>{s.t}</h3>
             {s.ar && (
               <p className="mt-1 text-sm text-[var(--neon)]" dir="rtl">
                 {s.ar}

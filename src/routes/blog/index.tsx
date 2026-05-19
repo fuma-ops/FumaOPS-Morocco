@@ -7,6 +7,12 @@ export const Route = createFileRoute("/blog/")({
 
 const articles = [
   {
+    slug: "article-1",
+    title: "Comment créer un site e-commerce au Maroc sans abonnement en 2026",
+    description:
+      "Guide complet pour vendre en ligne sans abonnement, maîtriser le Cash on Delivery et exploser vos ventes.",
+  },
+  {
     slug: "creer-site-ecommerce-maroc",
     title: "Comment créer un site e-commerce au Maroc : Le Guide Complet",
     description:
