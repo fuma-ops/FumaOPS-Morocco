@@ -1,5 +1,12 @@
+import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Outlet, Link, createRootRouteWithContext, useRouter } from "@tanstack/react-router";
+import {
+  Outlet,
+  Link,
+  createRootRouteWithContext,
+  useRouter,
+  useLocation,
+} from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 
@@ -70,6 +77,23 @@ const particles = Array.from({ length: 20 }).map((_, i) => ({
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+
+  useEffect(() => {
+    const pathname = location.pathname;
+    const cleanPath =
+      pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+    const canonicalUrl = `https://fumaops.com${cleanPath}`;
+
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement("link");
+      canonicalLink.setAttribute("rel", "canonical");
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute("href", canonicalUrl);
+  }, [location.pathname]);
+
   return (
     <QueryClientProvider client={queryClient}>
       <div className="synthwave-bg">

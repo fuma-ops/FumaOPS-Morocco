@@ -2,5 +2,7 @@
   "name": "FumaOPS Agency",
   "description": "Portefolio d'agence de création de sites e-commerce performants.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

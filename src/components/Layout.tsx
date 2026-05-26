@@ -10,13 +10,39 @@ const nav = [
   { to: "/tarifs", label: "Tarifs" },
   { to: "/processus", label: "Processus" },
   { to: "/blog", label: "Blog" },
+  {
+    label: "Outils ▾",
+    children: [
+      { to: "/outils/calculateur-prix-site-web", label: "Calculateur prix site web" },
+      {
+        to: "/outils/generateur-politique-confidentialite",
+        label: "Générateur politique confidentialité",
+      },
+      {
+        to: "/outils/generateur-palette-couleurs",
+        label: "Générateur palette de couleurs",
+      },
+      {
+        to: "/outils/generateur-meta-tags-seo",
+        label: "Générateur meta tags SEO",
+      },
+      {
+        to: "/outils/generateur-qr-code",
+        label: "Générateur QR Code",
+      },
+      {
+        to: "/outils/generateur-facture",
+        label: "Générateur de Facture",
+      },
+    ],
+  },
   { to: "/contact", label: "Contact" },
 ] as const;
 
 export function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 glass relative overflow-hidden">
+    <header className="sticky top-0 z-[999] glass w-full">
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-white/5">
         <div className="h-full w-1/3 gradient-primary blur-[1px] animate-navbar-line relative" />
         <div className="absolute top-0 left-0 h-full w-1/4 gradient-primary animate-navbar-line" />
@@ -37,16 +63,46 @@ export function Header() {
         </Link>
         <nav className="hidden md:flex items-center gap-1">
           {nav.map((n) => (
-            <Link
-              key={n.to}
-              to={n.to}
-              className="px-4 py-2 rounded-full text-sm text-white hover:text-white/80 transition-all font-medium"
-              activeProps={{
-                className: "px-4 py-2 rounded-full text-sm gradient-text font-bold bg-white/5",
-              }}
-            >
-              {n.label}
-            </Link>
+            <div key={n.label} className="relative group">
+              {n.to ? (
+                <Link
+                  to={n.to}
+                  className="px-4 py-2 rounded-full text-sm text-white hover:text-white/80 transition-all font-medium"
+                  activeProps={{
+                    className: "px-4 py-2 rounded-full text-sm gradient-text font-bold bg-white/5",
+                  }}
+                >
+                  {n.label}
+                </Link>
+              ) : (
+                <div className="px-4 py-2 rounded-full text-sm text-white hover:text-white/80 transition-all font-medium cursor-pointer">
+                  {n.label}
+                </div>
+              )}
+
+              {n.children && (
+                <div className="absolute top-full left-0 mt-2 w-56 rounded-2xl glass border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col p-2 shadow-xl z-[999]">
+                  {n.children.map((child) =>
+                    child.disabled ? (
+                      <span
+                        key={child.label}
+                        className="px-4 py-2.5 text-xs text-muted-foreground cursor-not-allowed"
+                      >
+                        {child.label}
+                      </span>
+                    ) : (
+                      <Link
+                        key={child.to}
+                        to={child.to}
+                        className="px-4 py-2.5 rounded-xl text-sm text-white hover:bg-white/10 transition-colors"
+                      >
+                        {child.label}
+                      </Link>
+                    ),
+                  )}
+                </div>
+              )}
+            </div>
           ))}
         </nav>
         <div className="flex items-center gap-2">
@@ -69,17 +125,47 @@ export function Header() {
         <div className="md:hidden border-t border-white/10 animate-fade-up relative z-10 glass">
           <nav className="px-4 py-4 flex flex-col gap-1">
             {nav.map((n) => (
-              <Link
-                key={n.to}
-                to={n.to}
-                onClick={() => setOpen(false)}
-                className="px-4 py-3 rounded-xl text-sm text-white hover:bg-white/5 font-medium"
-                activeProps={{
-                  className: "px-4 py-3 rounded-xl text-sm gradient-text font-bold bg-white/10",
-                }}
-              >
-                {n.label}
-              </Link>
+              <div key={n.label} className="flex flex-col">
+                {n.to ? (
+                  <Link
+                    to={n.to}
+                    onClick={() => setOpen(false)}
+                    className="px-4 py-3 rounded-xl text-sm text-white hover:bg-white/5 font-medium"
+                    activeProps={{
+                      className: "px-4 py-3 rounded-xl text-sm gradient-text font-bold bg-white/10",
+                    }}
+                  >
+                    {n.label}
+                  </Link>
+                ) : (
+                  <div className="px-4 py-3 rounded-xl text-sm text-white font-medium">
+                    {n.label}
+                  </div>
+                )}
+                {n.children && (
+                  <div className="flex flex-col ml-4 border-l border-white/10 pl-2 mt-1">
+                    {n.children.map((child) =>
+                      child.disabled ? (
+                        <span
+                          key={child.label}
+                          className="px-4 py-2.5 text-xs text-muted-foreground"
+                        >
+                          {child.label}
+                        </span>
+                      ) : (
+                        <Link
+                          key={child.to}
+                          to={child.to}
+                          onClick={() => setOpen(false)}
+                          className="px-4 py-2.5 rounded-xl text-sm text-muted-foreground hover:text-white transition-colors"
+                        >
+                          {child.label}
+                        </Link>
+                      ),
+                    )}
+                  </div>
+                )}
+              </div>
             ))}
             <Link
               to="/contact"
@@ -121,10 +207,34 @@ export function Footer() {
           <h4 className="text-sm font-semibold mb-3">Navigation</h4>
           <ul className="space-y-2 text-sm text-muted-foreground">
             {nav.map((n) => (
-              <li key={n.to}>
-                <Link to={n.to} className="hover:text-foreground transition-colors">
-                  {n.label}
-                </Link>
+              <li key={n.label}>
+                {n.to ? (
+                  <Link to={n.to} className="hover:text-foreground transition-colors">
+                    {n.label}
+                  </Link>
+                ) : (
+                  <span className="text-foreground transition-colors">
+                    {n.label.replace(" ▾", "")}
+                  </span>
+                )}
+                {n.children && (
+                  <ul className="pl-3 mt-2 space-y-2 border-l border-white/10">
+                    {n.children.map((child) => (
+                      <li key={child.label}>
+                        {child.disabled ? (
+                          <span className="text-xs text-muted-foreground">{child.label}</span>
+                        ) : (
+                          <Link
+                            to={child.to}
+                            className="text-xs hover:text-foreground transition-colors"
+                          >
+                            {child.label}
+                          </Link>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -161,8 +271,19 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/10 py-6 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} FumaOPS. Tous droits réservés.
+      <div className="border-t border-white/10 py-6 text-center text-xs text-muted-foreground flex flex-col items-center gap-2">
+        <div>© {new Date().getFullYear()} FumaOPS. Tous droits réservés.</div>
+        <div className="flex gap-4">
+          <Link
+            to="/politique-de-confidentialite"
+            className="hover:text-foreground transition-colors"
+          >
+            Politique de confidentialité
+          </Link>
+          <Link to="/mentions-legales" className="hover:text-foreground transition-colors">
+            Mentions légales
+          </Link>
+        </div>
       </div>
     </footer>
   );
@@ -174,7 +295,7 @@ export function FloatingWhatsApp() {
       href="https://wa.me/212646340729"
       target="_blank"
       rel="noopener"
-      className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 h-14 w-14 rounded-full gradient-primary flex items-center justify-center glow hover:scale-110 transition-transform group"
+      className="fixed bottom-24 right-5 md:bottom-6 md:right-6 z-[1001] h-14 w-14 rounded-full gradient-primary flex items-center justify-center glow hover:scale-110 transition-transform group"
       aria-label="WhatsApp"
     >
       <MessageCircle className="h-6 w-6 text-white group-hover:rotate-12 transition-transform" />
@@ -185,9 +306,9 @@ export function FloatingWhatsApp() {
 
 export function PageShell({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col overflow-x-hidden">
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 w-full max-w-[100vw] overflow-x-hidden">{children}</main>
       <Footer />
       <FloatingWhatsApp />
     </div>

@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
-Sitemap: https://www.fumaops.com/sitemap.xml
+Disallow: /admin/
+Disallow: /private/
+Sitemap: https://fumaops.com/sitemap.xml
