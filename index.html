@@ -12,36 +12,6 @@
     <meta name="robots" content="index, follow" />
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
 
-    <script>
-      (function() {
-        var host = window.location.host;
-        var protocol = window.location.protocol;
-        var pathname = window.location.pathname;
-        var search = window.location.search;
-        var hash = window.location.hash;
-        var redirect = false;
-
-        if (protocol === "http:" && host.indexOf("localhost") === -1 && host.indexOf("127.0.0.1") === -1) {
-          protocol = "https:";
-          redirect = true;
-        }
-
-        if (host === "www.fumaops.com") {
-          host = "fumaops.com";
-          redirect = true;
-        }
-
-        if (pathname.length > 1 && pathname.endsWith("/")) {
-          pathname = pathname.slice(0, -1);
-          redirect = true;
-        }
-
-        if (redirect) {
-          window.location.replace(protocol + "//" + host + pathname + search + hash);
-        }
-      })();
-    </script>
-
     <meta property="og:title" content="FumaOPS — Sites e-commerce sur mesure au Maroc" />
     <meta
       property="og:description"
