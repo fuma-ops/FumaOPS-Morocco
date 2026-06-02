@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/Layout";
 
 export const Route = createFileRoute("/blog/")({
+  head: () => ({
+    meta: [
+      { title: "Blog E-commerce Maroc — FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Conseils, guides et astuces pour réussir votre e-commerce au Maroc : COD, WhatsApp, SEO et plus.",
+      },
+    ],
+  }),
   component: Blog,
 });
 

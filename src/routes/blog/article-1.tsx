@@ -3,27 +3,22 @@ import { PageShell } from "@/components/Layout";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/blog/article-1")({
+  head: () => ({
+    meta: [
+      {
+        title: "Comment créer un site e-commerce au Maroc sans abonnement en 2026 | FumaOPS",
+      },
+      {
+        name: "description",
+        content:
+          "Découvrez comment créer un site e-commerce au Maroc en 2026. Guide complet pour vendre en ligne sans abonnement, maîtriser le Cash on Delivery et exploser vos ventes.",
+      },
+    ],
+  }),
   component: Article,
 });
 
 function Article() {
-  useEffect(() => {
-    document.title = "Comment créer un site e-commerce au Maroc sans abonnement en 2026 | FumaOPS";
-    const metaDescription = document.querySelector('meta[name="description"]');
-    if (metaDescription) {
-      metaDescription.setAttribute(
-        "content",
-        "Découvrez comment créer un site e-commerce au Maroc en 2026. Guide complet pour vendre en ligne sans abonnement, maîtriser le Cash on Delivery et exploser vos ventes.",
-      );
-    } else {
-      const meta = document.createElement("meta");
-      meta.name = "description";
-      meta.content =
-        "Découvrez comment créer un site e-commerce au Maroc en 2026. Guide complet pour vendre en ligne sans abonnement, maîtriser le Cash on Delivery et exploser vos ventes.";
-      document.head.appendChild(meta);
-    }
-  }, []);
-
   return (
     <PageShell>
       <article className="mx-auto max-w-4xl px-5 sm:px-6 py-16 sm:py-24 animate-fade-in relative">

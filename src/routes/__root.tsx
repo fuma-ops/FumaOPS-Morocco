@@ -83,7 +83,7 @@ function RootComponent() {
     const pathname = location.pathname;
     const cleanPath =
       pathname.length > 1 && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
-    const canonicalUrl = `https://fumaops.com${cleanPath}`;
+    const canonicalUrl = `https://www.fumaops.com${cleanPath}`;
 
     let canonicalLink = document.querySelector('link[rel="canonical"]');
     if (!canonicalLink) {

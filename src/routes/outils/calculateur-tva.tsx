@@ -12,6 +12,31 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/outils/calculateur-tva")({
+  head: () => ({
+    meta: [
+      {
+        title: "Calculateur TVA Gratuit 2025 — Tous Pays HT vers TTC et TTC vers HT | FumaOPS",
+      },
+      {
+        name: "description",
+        content:
+          "Calculez instantanément votre TVA en ligne. HT vers TTC ou TTC vers HT. Tous les taux de TVA : France, Maroc, Belgique, Suisse, Canada, Tunisie, Algérie, Arabie Saoudite et 50+ pays. Gratuit, sans inscription — FumaOPS.",
+      },
+      {
+        name: "keywords",
+        content:
+          "calculateur tva gratuit, calculer tva en ligne, calcul tva 20, convertir ht en ttc, convertir ttc en ht, calculateur tva france, calcul tva maroc, calculateur tva belgique, calculateur tva suisse, vat calculator, calculateur tva universel, taux tva par pays, calcul tva algerie, calcul tva tunisie, vat calculator saudi arabia, calculateur tva canada, calcul tva auto entrepreneur, ht ttc calculateur gratuit",
+      },
+      { property: "og:title", content: "Calculateur TVA Gratuit Universel | FumaOPS" },
+      {
+        property: "og:description",
+        content: "Calculez votre TVA pour 50+ pays. HT → TTC et TTC → HT instantané. Gratuit.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "fr" },
+    ],
+  }),
   component: RouteComponent,
 });
 
@@ -508,57 +533,6 @@ function RouteComponent() {
 
   // Handle SEO tags injection
   useEffect(() => {
-    document.title =
-      "Calculateur TVA Gratuit 2025 — Tous Pays HT vers TTC et TTC vers HT | FumaOPS";
-
-    // Update or create meta tag helper
-    const updateMeta = (name: string, content: string, isProperty = false) => {
-      const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-      let meta = document.querySelector(selector);
-      if (meta) {
-        meta.setAttribute("content", content);
-      } else {
-        meta = document.createElement("meta");
-        if (isProperty) {
-          meta.setAttribute("property", name);
-        } else {
-          meta.setAttribute("name", name);
-        }
-        meta.setAttribute("content", content);
-        document.head.appendChild(meta);
-      }
-    };
-
-    updateMeta(
-      "description",
-      "Calculez instantanément votre TVA en ligne. HT vers TTC ou TTC vers HT. Tous les taux de TVA : France, Maroc, Belgique, Suisse, Canada, Tunisie, Algérie, Arabie Saoudite et 50+ pays. Gratuit, sans inscription — FumaOPS.",
-    );
-    updateMeta(
-      "keywords",
-      "calculateur tva gratuit, calculer tva en ligne, calcul tva 20, convertir ht en ttc, convertir ttc en ht, calculateur tva france, calcul tva maroc, calculateur tva belgique, calculateur tva suisse, vat calculator, calculateur tva universel, taux tva par pays, calcul tva algerie, calcul tva tunisie, vat calculator saudi arabia, calculateur tva canada, calcul tva auto entrepreneur, ht ttc calculateur gratuit",
-    );
-
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute("href", "https://fumaops.com/outils/calculateur-tva");
-    } else {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      canonical.setAttribute("href", "https://fumaops.com/outils/calculateur-tva");
-      document.head.appendChild(canonical);
-    }
-
-    updateMeta("og:title", "Calculateur TVA Gratuit Universel | FumaOPS", true);
-    updateMeta(
-      "og:description",
-      "Calculez votre TVA pour 50+ pays. HT → TTC et TTC → HT instantané. Gratuit.",
-      true,
-    );
-    updateMeta("og:url", "https://fumaops.com/outils/calculateur-tva", true);
-    updateMeta("og:type", "website", true);
-    updateMeta("robots", "index, follow");
-    updateMeta("language", "fr");
-
     // Microdata Schema injection
     const appSchema = document.createElement("script");
     appSchema.type = "application/ld+json";

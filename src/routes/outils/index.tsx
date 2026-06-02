@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/Layout";
 
 export const Route = createFileRoute("/outils/")({
+  head: () => ({
+    meta: [
+      { title: "Outils E-commerce Gratuits — FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Découvrez nos outils gratuits : calculateur de prix, générateur de meta tags, factures, QR codes et plus.",
+      },
+    ],
+  }),
   component: OutilsIndex,
 });
 

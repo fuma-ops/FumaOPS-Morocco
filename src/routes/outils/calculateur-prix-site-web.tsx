@@ -4,6 +4,30 @@ import { useState, useEffect } from "react";
 import { Check, ChevronRight } from "lucide-react";
 
 export const Route = createFileRoute("/outils/calculateur-prix-site-web")({
+  head: () => ({
+    meta: [
+      { title: "Calculateur Prix Site Web Gratuit 2025 | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Calculez gratuitement le prix de votre site web en 2 minutes. Estimation personnalisée selon votre activité, vos fonctionnalités et votre budget. Vitrine, e-commerce, portfolio. Devis sans engagement par FumaOPS.",
+      },
+      {
+        name: "keywords",
+        content:
+          "prix site web, combien coute un site web, tarif site web, devis site web gratuit, créer un site web prix, calculateur prix site web, coût création site internet, prix site vitrine, prix site e-commerce, tarif agence web, combien coute un site internet, estimation site web, prix site web 2025, créer site web pas cher",
+      },
+      { property: "og:title", content: "Calculateur Prix Site Web Gratuit | FumaOPS" },
+      {
+        property: "og:description",
+        content:
+          "Estimez le coût de votre site web en 2 minutes. Résultat immédiat, sans inscription.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "fr" },
+    ],
+  }),
   component: CalculatorPage,
 });
 
@@ -62,56 +86,6 @@ export function CalculatorPage() {
   const [deadline, setDeadline] = useState(deadlines[1].id);
 
   useEffect(() => {
-    document.title = "Calculateur Prix Site Web Gratuit 2025 | FumaOPS";
-
-    // Update or create meta tags
-    const updateMeta = (name: string, content: string, isProperty = false) => {
-      const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-      let meta = document.querySelector(selector);
-      if (meta) {
-        meta.setAttribute("content", content);
-      } else {
-        meta = document.createElement("meta");
-        if (isProperty) {
-          meta.setAttribute("property", name);
-        } else {
-          meta.setAttribute("name", name);
-        }
-        meta.setAttribute("content", content);
-        document.head.appendChild(meta);
-      }
-    };
-
-    updateMeta(
-      "description",
-      "Calculez gratuitement le prix de votre site web en 2 minutes. Estimation personnalisée selon votre activité, vos fonctionnalités et votre budget. Vitrine, e-commerce, portfolio. Devis sans engagement par FumaOPS.",
-    );
-    updateMeta(
-      "keywords",
-      "prix site web, combien coute un site web, tarif site web, devis site web gratuit, créer un site web prix, calculateur prix site web, coût création site internet, prix site vitrine, prix site e-commerce, tarif agence web, combien coute un site internet, estimation site web, prix site web 2025, créer site web pas cher",
-    );
-
-    let canonical = document.querySelector('link[rel="canonical"]');
-    if (canonical) {
-      canonical.setAttribute("href", "https://fumaops.com/outils/calculateur-prix-site-web");
-    } else {
-      canonical = document.createElement("link");
-      canonical.setAttribute("rel", "canonical");
-      canonical.setAttribute("href", "https://fumaops.com/outils/calculateur-prix-site-web");
-      document.head.appendChild(canonical);
-    }
-
-    updateMeta("og:title", "Calculateur Prix Site Web Gratuit | FumaOPS", true);
-    updateMeta(
-      "og:description",
-      "Estimez le coût de votre site web en 2 minutes. Résultat immédiat, sans inscription.",
-      true,
-    );
-    updateMeta("og:url", "https://fumaops.com/outils/calculateur-prix-site-web", true);
-    updateMeta("og:type", "website", true);
-    updateMeta("robots", "index, follow");
-    updateMeta("language", "fr");
-
     // Add structured data
     const scriptApp = document.createElement("script");
     scriptApp.type = "application/ld+json";

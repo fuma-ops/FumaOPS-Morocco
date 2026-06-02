@@ -4,6 +4,30 @@ import { useState, useEffect } from "react";
 import { Check, Copy, Download, RefreshCw, Palette, ChevronDown } from "lucide-react";
 
 export const Route = createFileRoute("/outils/generateur-palette-couleurs")({
+  head: () => ({
+    meta: [
+      { title: "Générateur de Palette de Couleurs Gratuit pour Site Web 2025 | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Créez gratuitement votre palette de couleurs pour site web, logo ou marque en quelques secondes. Export CSS, HEX, RGB instantané. Outil 100% gratuit sans inscription — FumaOPS.",
+      },
+      {
+        name: "keywords",
+        content:
+          "générateur palette couleurs gratuit, palette de couleurs site web, choisir couleurs site web, palette couleurs marque, générateur couleurs css, palette couleurs logo, combinaison couleurs site internet, palette couleurs professionnelle, outil couleurs webdesign, choisir palette couleurs entreprise, couleurs harmonieuses site web, palette couleurs 2025",
+      },
+      { property: "og:title", content: "Générateur de Palette de Couleurs Gratuit | FumaOPS" },
+      {
+        property: "og:description",
+        content:
+          "Créez votre palette de couleurs pour site web ou marque en quelques secondes. Export CSS/HEX/RGB gratuit.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "fr" },
+    ],
+  }),
   component: PaletteGeneratorPage,
 });
 
@@ -227,51 +251,6 @@ function PaletteGeneratorPage() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = "Générateur de Palette de Couleurs Gratuit pour Site Web 2025 | FumaOPS";
-    const updateMeta = (name: string, content: string, isProperty = false) => {
-      const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-      let meta = document.querySelector(selector);
-      if (meta) {
-        meta.setAttribute("content", content);
-      } else {
-        meta = document.createElement("meta");
-        if (isProperty) meta.setAttribute("property", name);
-        else meta.setAttribute("name", name);
-        meta.setAttribute("content", content);
-        document.head.appendChild(meta);
-      }
-    };
-    const updateLink = (rel: string, href: string) => {
-      let link = document.querySelector(`link[rel="${rel}"]`);
-      if (link) {
-        link.setAttribute("href", href);
-      } else {
-        link = document.createElement("link");
-        link.setAttribute("rel", rel);
-        link.setAttribute("href", href);
-        document.head.appendChild(link);
-      }
-    };
-
-    updateMeta(
-      "description",
-      "Créez gratuitement votre palette de couleurs pour site web, logo ou marque en quelques secondes. Export CSS, HEX, RGB instantané. Outil 100% gratuit sans inscription — FumaOPS.",
-    );
-    updateMeta(
-      "keywords",
-      "générateur palette couleurs gratuit, palette de couleurs site web, choisir couleurs site web, palette couleurs marque, générateur couleurs css, palette couleurs logo, combinaison couleurs site internet, palette couleurs professionnelle, outil couleurs webdesign, choisir palette couleurs entreprise, couleurs harmonieuses site web, palette couleurs 2025",
-    );
-    updateMeta("robots", "index, follow");
-    updateMeta("language", "fr");
-    updateMeta("og:title", "Générateur de Palette de Couleurs Gratuit | FumaOPS", true);
-    updateMeta(
-      "og:description",
-      "Créez votre palette de couleurs pour site web ou marque en quelques secondes. Export CSS/HEX/RGB gratuit.",
-      true,
-    );
-    updateMeta("og:type", "website", true);
-    updateLink("canonical", "https://fumaops.com/outils/generateur-palette-couleurs");
-
     const appSchema = {
       "@context": "https://schema.org",
       "@type": "WebApplication",

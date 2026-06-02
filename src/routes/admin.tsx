@@ -13,7 +13,10 @@ import { LogIn, ShieldAlert } from "lucide-react";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
-    meta: [{ title: "Admin — FumaOPS" }],
+    meta: [
+      { title: "Admin — FumaOPS" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
   }),
   component: Admin,
 });

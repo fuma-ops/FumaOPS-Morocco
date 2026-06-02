@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/Layout";
 
 export const Route = createFileRoute("/blog/vendre-en-ligne-maroc-sans-abonnement")({
+  head: () => ({
+    meta: [
+      { title: "Vendre en ligne au Maroc sans abonnement mensuel | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Pourquoi choisir un site e-commerce sans abonnement est la meilleure stratégie pour le marché marocain.",
+      },
+    ],
+  }),
   component: Article,
 });
 

@@ -3,26 +3,16 @@ import { PageShell } from "@/components/Layout";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/politique-de-confidentialite")({
+  head: () => ({
+    meta: [
+      { title: "Politique de Confidentialité | FumaOPS" },
+      { name: "robots", content: "noindex, follow" },
+    ],
+  }),
   component: PolitiqueDeConfidentialitePage,
 });
 
 function PolitiqueDeConfidentialitePage() {
-  useEffect(() => {
-    document.title = "Politique de Confidentialité | FumaOPS";
-    const updateMeta = (name: string, content: string) => {
-      let meta = document.querySelector(`meta[name="${name}"]`);
-      if (meta) {
-        meta.setAttribute("content", content);
-      } else {
-        meta = document.createElement("meta");
-        meta.setAttribute("name", name);
-        meta.setAttribute("content", content);
-        document.head.appendChild(meta);
-      }
-    };
-    updateMeta("robots", "noindex, follow");
-  }, []);
-
   const date = new Intl.DateTimeFormat("fr-FR", { dateStyle: "long" }).format(new Date());
 
   return (

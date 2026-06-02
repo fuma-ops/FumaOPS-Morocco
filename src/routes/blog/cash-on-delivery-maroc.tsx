@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/Layout";
 
 export const Route = createFileRoute("/blog/cash-on-delivery-maroc")({
+  head: () => ({
+    meta: [
+      { title: "Cash on Delivery (COD) & WhatsApp E-commerce au Maroc | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Pourquoi le paiement à la livraison est roi au Maroc et comment optimiser vos ventes grâce à WhatsApp.",
+      },
+    ],
+  }),
   component: Article,
 });
 

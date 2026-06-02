@@ -2,6 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "@/components/Layout";
 
 export const Route = createFileRoute("/blog/creer-site-ecommerce-maroc")({
+  head: () => ({
+    meta: [
+      { title: "Comment créer un site e-commerce au Maroc : Le Guide Complet | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Lancez votre boutique en ligne avec succès au Maroc : plateformes, stratégies COD et conseils d'experts.",
+      },
+    ],
+  }),
   component: Article,
 });
 

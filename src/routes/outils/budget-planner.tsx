@@ -30,6 +30,30 @@ import {
 import { CustomCalendar } from "../../components/CustomCalendar";
 
 export const Route = createFileRoute("/outils/budget-planner")({
+  head: () => ({
+    meta: [
+      { title: "Planificateur de Budget Gratuit 2025 — Gérez vos Finances | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Prenez le contrôle de votre argent avec notre planificateur de budget gratuit. Suivi des revenus, dépenses, épargnes et factures. Exportable et facile à utiliser. Sans inscription — FumaOPS.",
+      },
+      {
+        name: "keywords",
+        content:
+          "planificateur budget gratuit, gérer son budget en ligne, simulateur budget familial, suivi dépenses gratuit, outil gestion financière, tableau budget mensuel, épargne simulateur, gestion factures en ligne, budget planner 2025, fumaops outils finances",
+      },
+      { property: "og:title", content: "Planificateur de Budget Gratuit | FumaOPS" },
+      {
+        property: "og:description",
+        content:
+          "Organisez vos finances personnelles en 5 minutes. Revenus, dépenses et épargnes au même endroit.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "fr" },
+    ],
+  }),
   component: RouteComponent,
 });
 

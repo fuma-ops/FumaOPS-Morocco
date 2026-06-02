@@ -18,6 +18,30 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/outils/generateur-qr-code")({
+  head: () => ({
+    meta: [
+      { title: "Générateur QR Code Gratuit & Personnalisé | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Générateur de QR Code Gratuit, personnalisé et illimité. Créez des designs élégants ou d'adorables templates de stickers QR en HD sans inscription — FumaOPS.",
+      },
+      {
+        name: "keywords",
+        content:
+          "générateur qr code gratuit, créer qr code personnalisé, code qr pour restaurant, sticker qr code mignon, qr code hd gratuit, générateur qr code sans inscription, qr code whatsapp, qr code wifi, fumaops outils gratuit",
+      },
+      { property: "og:title", content: "Générateur QR Code Gratuit & Personnalisé | FumaOPS" },
+      {
+        property: "og:description",
+        content:
+          "Créez vos QR Codes sur mesure : couleurs, formes, logos et templates stickers gratuits.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "fr" },
+    ],
+  }),
   component: QRCodeGeneratorPage,
 });
 
@@ -595,31 +619,6 @@ function QRCodeGeneratorPage() {
 
   // INITIAL LOAD & LIBS
   useEffect(() => {
-    document.title = "Générateur QR Code Gratuit & Personnalisé | Free QR Code Generator | FumaOPS";
-
-    // SEO Meta updates
-    let metaDesc = document.querySelector('meta[name="description"]');
-    if (!metaDesc) {
-      metaDesc = document.createElement("meta");
-      metaDesc.setAttribute("name", "description");
-      document.head.appendChild(metaDesc);
-    }
-    metaDesc.setAttribute(
-      "content",
-      "Générateur de QR Code Gratuit, personnalisé et illimité. Créez des designs élégants ou d'adorables templates de stickers QR de qualité HD sans aucune inscription. 100% Free Custom QR Code Creator.",
-    );
-
-    let metaKeywords = document.querySelector('meta[name="keywords"]');
-    if (!metaKeywords) {
-      metaKeywords = document.createElement("meta");
-      metaKeywords.setAttribute("name", "keywords");
-      document.head.appendChild(metaKeywords);
-    }
-    metaKeywords.setAttribute(
-      "content",
-      "qr code, code qr, qr code gratuit, code qr gratuit, générateur qr code, free qr code, free qr code generator, custom qr code, sticker qr code, qr code mignon, cute qr code, generateur qr code personnalisé, FumaOPS",
-    );
-
     const script = document.createElement("script");
     script.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
     script.async = true;

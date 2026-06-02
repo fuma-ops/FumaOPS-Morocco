@@ -14,6 +14,30 @@ import {
 } from "lucide-react";
 
 export const Route = createFileRoute("/outils/generateur-meta-tags-seo")({
+  head: () => ({
+    meta: [
+      { title: "Générateur de Meta Tags SEO Gratuit 2025 | FumaOPS" },
+      {
+        name: "description",
+        content:
+          "Générez gratuitement vos meta tags SEO optimisés en 2 minutes. Title, description, Open Graph, Twitter Card. Prêt à copier-coller dans votre site web. Sans inscription — FumaOPS.",
+      },
+      {
+        name: "keywords",
+        content:
+          "générateur meta tags seo gratuit, créer meta description site web, meta title seo, balises meta seo, open graph generator, meta tags html gratuit, optimiser seo site web, meta description optimisée, balises seo site web, générer title seo, meta tags 2025, référencement naturel balises",
+      },
+      { property: "og:title", content: "Générateur Meta Tags SEO Gratuit | FumaOPS" },
+      {
+        property: "og:description",
+        content:
+          "Créez vos balises SEO optimisées en 2 minutes. Title, description, Open Graph. Gratuit et sans inscription.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "robots", content: "index, follow" },
+      { name: "language", content: "fr" },
+    ],
+  }),
   component: MetaTagsGeneratorPage,
 });
 
@@ -61,51 +85,6 @@ function MetaTagsGeneratorPage() {
   const score = calculateScore();
 
   useEffect(() => {
-    document.title = "Générateur de Meta Tags SEO Gratuit 2025 | FumaOPS";
-    const updateMeta = (name: string, content: string, isProperty = false) => {
-      const selector = isProperty ? `meta[property="${name}"]` : `meta[name="${name}"]`;
-      let meta = document.querySelector(selector);
-      if (meta) {
-        meta.setAttribute("content", content);
-      } else {
-        meta = document.createElement("meta");
-        if (isProperty) meta.setAttribute("property", name);
-        else meta.setAttribute("name", name);
-        meta.setAttribute("content", content);
-        document.head.appendChild(meta);
-      }
-    };
-    const updateLink = (rel: string, href: string) => {
-      let link = document.querySelector(`link[rel="${rel}"]`);
-      if (link) {
-        link.setAttribute("href", href);
-      } else {
-        link = document.createElement("link");
-        link.setAttribute("rel", rel);
-        link.setAttribute("href", href);
-        document.head.appendChild(link);
-      }
-    };
-
-    updateMeta(
-      "description",
-      "Générez gratuitement vos meta tags SEO optimisés en 2 minutes. Title, description, Open Graph, Twitter Card. Prêt à copier-coller dans votre site web. Sans inscription — FumaOPS.",
-    );
-    updateMeta(
-      "keywords",
-      "générateur meta tags seo gratuit, créer meta description site web, meta title seo, balises meta seo, open graph generator, meta tags html gratuit, optimiser seo site web, meta description optimisée, balises seo site web, générer title seo, meta tags 2025, référencement naturel balises",
-    );
-    updateMeta("robots", "index, follow");
-    updateMeta("language", "fr");
-    updateMeta("og:title", "Générateur Meta Tags SEO Gratuit | FumaOPS", true);
-    updateMeta(
-      "og:description",
-      "Créez vos balises SEO optimisées en 2 minutes. Title, description, Open Graph. Gratuit et sans inscription.",
-      true,
-    );
-    updateMeta("og:type", "website", true);
-    updateLink("canonical", "https://fumaops.com/outils/generateur-meta-tags-seo");
-
     const appSchema = {
       "@context": "https://schema.org",
       "@type": "WebApplication",

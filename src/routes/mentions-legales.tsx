@@ -3,26 +3,16 @@ import { PageShell } from "@/components/Layout";
 import { useEffect } from "react";
 
 export const Route = createFileRoute("/mentions-legales")({
+  head: () => ({
+    meta: [
+      { title: "Mentions Légales | FumaOPS" },
+      { name: "robots", content: "noindex, follow" },
+    ],
+  }),
   component: MentionsLegalesPage,
 });
 
 function MentionsLegalesPage() {
-  useEffect(() => {
-    document.title = "Mentions Légales | FumaOPS";
-    const updateMeta = (name: string, content: string) => {
-      let meta = document.querySelector(`meta[name="${name}"]`);
-      if (meta) {
-        meta.setAttribute("content", content);
-      } else {
-        meta = document.createElement("meta");
-        meta.setAttribute("name", name);
-        meta.setAttribute("content", content);
-        document.head.appendChild(meta);
-      }
-    };
-    updateMeta("robots", "noindex, follow");
-  }, []);
-
   return (
     <PageShell>
       <section className="mx-auto max-w-4xl px-5 sm:px-6 pt-12 sm:pt-20 pb-20 animate-fade-in relative z-10 text-left">
