@@ -990,9 +990,9 @@ function RouteComponent() {
                 <div className="space-y-3.5">
                   {plannerExpenses.map((cat, catIdx) => {
                     const spentSum = getExpensesCategorySum(cat);
-                    const budgetLimit = cat.budget;
+                    const budgetLimit = categoryBudgets[cat.title] || 0;
                     const ratio = budgetLimit > 0 ? (spentSum / budgetLimit) * 100 : 0;
-                    const isExpanded = expandedCategoryIndices.includes(catIdx);
+                    const isExpanded = !!expandedCategories[catIdx];
                     return (
                       <div 
                         key={cat.title} 
@@ -1072,7 +1072,7 @@ function RouteComponent() {
                                       <input 
                                         type="text"
                                         autoFocus
-                                        className="px-3 py-1.5 border border-[#FF5F7E]/40 text-xs font-black rounded-xl bg-white focus:outline-none focus:border-[#FF5F7E]"
+                                        className="px-3 py-1.5 border border-[#8EB1D1]/40 text-xs font-black rounded-xl bg-white focus:outline-none focus:border-[#8EB1D1]"
                                         value={it.name}
                                         onChange={(e) => {
                                           const val = e.target.value;
@@ -1081,7 +1081,11 @@ function RouteComponent() {
                                             dup[catIdx].items[itemIdx].name = val;
                                             return dup;
                                           });
-                                                              ) : (
+                                        }}
+                                        onBlur={() => setEditingExpenseField(null)}
+                                        onKeyDown={(e) => { if (e.key === 'Enter') setEditingExpenseField(null); }}
+                                      />
+                                    ) : (
                                       <span 
                                         onClick={() => setEditingExpenseField({ catIndex: catIdx, itemIndex: itemIdx, field: "name" })}
                                         className="text-xs font-black text-[#1C2B48] cursor-pointer hover:underline flex items-center gap-1.5"
@@ -1097,9 +1101,7 @@ function RouteComponent() {
                                       <input 
                                         type="number"
                                         autoFocus
-                                        className="w-24 px-3 py-1.5 text-xs text-right font-black border border-[#8EB1D1]/40 rounded-xl bg-white focus:outline-none focus:border-[#8EB1D1]"          type="number"
-                                        autoFocus
-                                        className="w-24 px-3 py-1.5 text-xs text-right font-black border border-[#FF5F7E]/40 rounded-xl bg-white focus:outline-none focus:border-[#FF5F7E]"
+                                        className="w-24 px-3 py-1.5 text-xs text-right font-black border border-[#8EB1D1]/40 rounded-xl bg-white focus:outline-none focus:border-[#8EB1D1]"
                                         value={it.actual}
                                         onChange={(e) => {
                                           const num = parseFloat(e.target.value) || 0;
@@ -1226,8 +1228,8 @@ function RouteComponent() {
                         </PieChart>
                       </ResponsiveContainer>
                       <div className="absolute inset-0 flex flex-col justify-center items-center pointer-events-none font-sans">
-                        <span className="text-[9px] font-black text-[#3F111B]/60 uppercase tracking-widest leading-none">Dépenses</span>
-                        <span className="text-sm font-black text-[#3F111B] mt-1">{totalActualExpenses.toLocaleString()} MAD</span>
+                        <span className="text-[9px] font-black text-[#1C2B48]/60 uppercase tracking-widest leading-none">Dépenses</span>
+                        <span className="text-sm font-black text-[#1C2B48] mt-1">{totalActualExpenses.toLocaleString()} MAD</span>
                       </div>
                     </div>
 
@@ -1237,13 +1239,21 @@ function RouteComponent() {
                         return (
                           <div key={entry.name} className="flex items-center gap-1.5 truncate">
                             <span className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: COLORS[index % COLORS.length] }} />
-                            <span className="truncate text-[#3F111B]">{entry.name}</span>
-                            <span className="text-[#3F111B]/60 font-black ml-auto">{pct}%</span>
+                            <span className="truncate text-[#1C2B48]">{entry.name}</span>
+                            <span className="text-[#1C2B48]/60 font-black ml-auto">{pct}%</span>
                           </div>
                         );
                       })}
                     </div>
-                   {/* SECTION 6 — WINS 🏆 */}
+                  </div>
+                ) : (
+                  <div className="py-10 text-center text-xs font-black text-[#1C2B48]/50">
+                    Saisissez des dépenses pour générer la répartition.
+                  </div>
+                )}
+              </div>
+
+              {/* SECTION 6 — WINS 🏆 */}
               <div id="section-wins-list" className="bg-white/30 border border-white/45 p-5 rounded-3xl backdrop-blur-md shadow-lg space-y-4">
                 <div className="flex justify-between items-center pb-2.5 border-b border-white/20">
                   <div className="flex items-center gap-2">
