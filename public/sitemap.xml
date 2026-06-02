@@ -58,6 +58,20 @@
   </url>
 
   <url>
+    <loc>https://www.fumaops.com/outils/convertisseur-excel-csv</loc>
+    <lastmod>2025-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>https://fumaops.com/outils/budget-planner</loc>
+    <lastmod>2025-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
     <loc>https://www.fumaops.com/politique-de-confidentialite</loc>
     <lastmod>2025-05-26</lastmod>
     <changefreq>yearly</changefreq>

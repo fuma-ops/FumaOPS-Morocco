@@ -337,3 +337,227 @@
 }
 
 @font-face { font-family: "Space Grotesk"; src: local("Space Grotesk"); }
+
+/* ----------------------------------------------------
+   PREMIUM BUDGET PLANNER STYLES
+   ---------------------------------------------------- */
+
+/* Fond de la page = fond de l'application visible */
+.budget-page-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Conteneur principal plus large et bien cadre pour respirer sur grand ecran */
+.budget-container {
+  width: 100%;
+  max-width: 1140px; /* Augmente pour un superbe rendu responsive double colonne */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 640px) {
+  .budget-container {
+    max-width: 100%;
+    gap: 16px;
+  }
+}
+
+/* Glassmorphism Cards Premium - Inspired by mobile app kit */
+.budget-card {
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 
+    0 8px 32px 0 rgba(255, 95, 126, 0.12),
+    inset 0 1px 1px rgba(255, 255, 255, 0.6);
+  padding: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Shimmer de brillance subtile en haut */
+.budget-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1.5px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.85),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.budget-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.40);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow:
+    0 12px 48px 0 rgba(255, 95, 126, 0.18),
+    inset 0 1px 1.5px rgba(255, 255, 255, 0.8);
+}
+
+/* Metric card structures with glowing glass styling */
+.metric-card {
+  border-radius: 24px;
+  padding: 18px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: default;
+}
+
+.metric-card::after {
+  content: '';
+  position: absolute;
+  top: -24px; right: -24px;
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+}
+
+.metric-card:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(142, 177, 209, 0.2);
+}
+
+/* Valeurs de metrics avec effet gradient et animation */
+.metric-value {
+  font-size: 1.625rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  background: linear-gradient(
+    135deg, 
+    currentColor, 
+    rgba(currentColor, 0.85)
+  );
+  -webkit-background-clip: text;
+  animation: countUp 0.5s ease forwards;
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Quick add form element style premium glassmorphic */
+.quick-add-card {
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow:
+    0 10px 30px rgba(28, 43, 72, 0.08);
+  padding: 22px;
+}
+
+.quick-add-input {
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #1C2B48;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+}
+
+.quick-add-input:focus {
+  outline: none;
+  border-color: rgba(142, 177, 209, 0.7);
+  box-shadow: 
+    0 0 0 4px rgba(142, 177, 209, 0.2);
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.btn-add-primary {
+  background: linear-gradient(135deg, #8EB1D1, #1C2B48);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 12px 24px;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px rgba(142, 177, 209, 0.25),
+    0 2px 4px rgba(28, 43, 72, 0.15);
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-add-primary:hover {
+  transform: translateY(-2.5px) scale(1.025);
+  box-shadow:
+    0 12px 24px rgba(142, 177, 209, 0.35),
+    0 4px 8px rgba(28, 43, 72, 0.2);
+}
+
+.btn-add-primary:active {
+  transform: translateY(0) scale(0.975);
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-b: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1C2B48;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-total-pill {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #1C2B48;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.02);
+}
+
+.income-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  margin-bottom: 10px;
+  transition: all 0.25s ease;
+}
+
+.income-row:hover {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(142, 177, 209, 0.5);
+  box-shadow: 0 6px 16px rgba(28, 43, 72, 0.06);
+  transform: translateY(-1.5px);
+}
+

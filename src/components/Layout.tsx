@@ -14,6 +14,7 @@ const nav = [
     label: "Outils ▾",
     children: [
       { to: "/outils/calculateur-prix-site-web", label: "Calculateur prix site web" },
+      { to: "/outils/calculateur-tva", label: "Calculateur de TVA" },
       {
         to: "/outils/generateur-politique-confidentialite",
         label: "Générateur politique confidentialité",
@@ -33,6 +34,18 @@ const nav = [
       {
         to: "/outils/generateur-facture",
         label: "Générateur de Facture",
+      },
+      {
+        to: "/outils/compresseur-image",
+        label: "Compresseur d'Image",
+      },
+      {
+        to: "/outils/convertisseur-excel-csv",
+        label: "Convertisseur Excel ↔ CSV",
+      },
+      {
+        to: "/outils/budget-planner",
+        label: "Budget Planner",
       },
     ],
   },
