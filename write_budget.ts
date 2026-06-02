@@ -1,4 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import fs from 'fs';
+
+const code = `import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageShell } from "../../components/Layout";
 import { useState, useMemo } from "react";
 import {
@@ -12,8 +14,7 @@ import {
   CreditCard,
   PiggyBank,
   Plus,
-  Trash2,
-  Printer
+  Trash2
 } from "lucide-react";
 import {
   PieChart,
@@ -27,16 +28,14 @@ import {
   CartesianGrid,
   Tooltip as RechartsTooltip,
 } from "recharts";
-import { CustomCalendar } from "../../components/CustomCalendar";
 
 export const Route = createFileRoute("/outils/budget-planner")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [currentTheme, setCurrentTheme] = useState<"purple" | "pink" | "red" | "blue" | "black">("purple");
+  const [currentTheme, setCurrentTheme] = useState<"pink" | "red" | "blue" | "black">("pink");
   const themes = [
-    { id: "purple", label: "Violet", color: "#8b5cf6" },
     { id: "pink", label: "Rose", color: "#f472b6" },
     { id: "red", label: "Rouge", color: "#f87171" },
     { id: "blue", label: "Bleu", color: "#8EB1D1" },
@@ -46,80 +45,39 @@ function RouteComponent() {
   const [activeTab, setActiveTab] = useState("Dashboard");
 
   // STATE LOGIC
-  const [selectedMonthRaw, setSelectedMonthRaw] = useState(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-  });
+  const [incomes, setIncomes] = useState<{id: string, source: string, amount: number}[]>([
+    { id: '1', source: 'Salaire', amount: 8000 }
+  ]);
+  const [newIncome, setNewIncome] = useState({ source: '', amount: '' });
 
-  const defaultCategories = [
+  const [categories, setCategories] = useState<{id: string, name: string, color: string, limit: number}[]>([
     { id: 'c1', name: "Logement", color: "var(--budget-primary-dark)", limit: 3000 },
     { id: 'c2', name: "Alimentation", color: "var(--budget-primary)", limit: 2000 },
     { id: 'c3', name: "Transport", color: "var(--budget-bg-end)", limit: 1000 },
     { id: 'c4', name: "Shopping", color: "var(--budget-bg-mid)", limit: 800 },
     { id: 'c5', name: "Factures", color: "var(--budget-accent)", limit: 500 },
     { id: 'c6', name: "Divers", color: "var(--budget-bg-start)", limit: 500 },
-  ];
+  ]);
 
-  const defaultSavingsGoals = [
+  const [expenses, setExpenses] = useState<{id: string, categoryId: string, name: string, amount: number}[]>([
+    { id: 'e1', categoryId: 'c1', name: 'Loyer', amount: 2500 },
+    { id: 'e2', categoryId: 'c2', name: 'Courses', amount: 1500 },
+    { id: 'e3', categoryId: 'c3', name: 'Essence', amount: 400 },
+  ]);
+  const [newExpense, setNewExpense] = useState({ categoryId: 'c1', name: '', amount: '' });
+
+  const [upcomingBills, setUpcomingBills] = useState<{id: string, name: string, date: string, amount: number, status: string}[]>([
+    { id: 'b1', name: "Loyer", date: "25 May, 2026", amount: 2500, status: "À payer" },
+    { id: 'b2', name: "Électricité", date: "27 May, 2026", amount: 350, status: "À payer" },
+    { id: 'b3', name: "Internet", date: "28 May, 2026", amount: 250, status: "À payer" },
+  ]);
+  const [newBill, setNewBill] = useState({ name: '', date: '', amount: '' });
+
+  const [savingsGoals, setSavingsGoals] = useState<{id: string, name: string, current: number, target: number}[]>([
     { id: 's1', name: "Fonds d'urgence", current: 5000, target: 20000 },
     { id: 's2', name: "Voyage d'été", current: 3000, target: 8000 },
     { id: 's3', name: "Nouvel Ordinateur", current: 1500, target: 15000 },
-  ];
-
-  const [dataMap, setDataMap] = useState<Record<string, any>>(() => {
-    const d = new Date();
-    const current = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-    return {
-      [current]: {
-        incomes: [{ id: '1', source: 'Salaire', amount: 8000 }],
-        expenses: [
-          { id: 'e1', categoryId: 'c1', name: 'Loyer', amount: 2500 },
-          { id: 'e2', categoryId: 'c2', name: 'Courses', amount: 1500 },
-          { id: 'e3', categoryId: 'c3', name: 'Essence', amount: 400 },
-        ],
-        upcomingBills: [
-          { id: 'b1', name: "Loyer", date: "25 May, 2026", amount: 2500, status: "À payer" },
-          { id: 'b2', name: "Électricité", date: "27 May, 2026", amount: 350, status: "À payer" },
-          { id: 'b3', name: "Internet", date: "28 May, 2026", amount: 250, status: "À payer" },
-        ]
-      }
-    };
-  });
-
-  const currentData = dataMap[selectedMonthRaw] || { incomes: [], expenses: [], upcomingBills: [] };
-  const incomes = currentData.incomes;
-  const expenses = currentData.expenses;
-  const upcomingBills = currentData.upcomingBills;
-
-  const updateDataForMonth = (key: string, newValueFn: any) => {
-    setDataMap(prev => {
-      const existing = prev[selectedMonthRaw] || { incomes: [], expenses: [], upcomingBills: [] };
-      const nextValue = typeof newValueFn === 'function' ? newValueFn(existing[key]) : newValueFn;
-      return {
-        ...prev,
-        [selectedMonthRaw]: {
-          ...existing,
-          [key]: nextValue
-        }
-      };
-    });
-  };
-
-  const setIncomes = (val: any) => updateDataForMonth('incomes', val);
-  const setExpenses = (val: any) => updateDataForMonth('expenses', val);
-  const setUpcomingBills = (val: any) => updateDataForMonth('upcomingBills', val);
-
-  const [newIncome, setNewIncome] = useState({ source: '', amount: '' });
-  const [categories, setCategories] = useState(defaultCategories);
-  const [newExpense, setNewExpense] = useState({ categoryId: 'c1', name: '', amount: '' });
-  const [newBill, setNewBill] = useState({ name: '', date: '', amount: '' });
-  const [savingsGoals, setSavingsGoals] = useState(defaultSavingsGoals);
-  const [newGoal, setNewGoal] = useState({ name: '', target: '' });
-
-  const resetCurrentMonth = () => {
-    setDataMap(prev => ({ ...prev, [selectedMonthRaw]: { incomes: [], expenses: [], upcomingBills: [] } }));
-  };
-
+  ]);
 
   // CALCULATIONS
   const totalIncome = incomes.reduce((acc, curr) => acc + curr.amount, 0);
@@ -130,7 +88,6 @@ function RouteComponent() {
   const monthlySavingsRate = totalIncome > 0 ? Math.round(((totalIncome - totalExpenses) / totalIncome) * 100) : 0;
 
   // Chart Data
-  // currentDate removed
   const donutData = categories.map(cat => {
     const catExpenses = expenses.filter(e => e.categoryId === cat.id).reduce((a, b) => a + b.amount, 0);
     return { name: cat.name, value: catExpenses, color: cat.color };
@@ -151,23 +108,6 @@ function RouteComponent() {
   };
   const deleteExpense = (id: string) => setExpenses(expenses.filter(e => e.id !== id));
 
-  const addGoal = () => {
-    if (!newGoal.name || !newGoal.target) return;
-    setSavingsGoals([...savingsGoals, { id: Date.now().toString(), name: newGoal.name, current: 0, target: parseFloat(newGoal.target) }]);
-    setNewGoal({ name: '', target: '' });
-  };
-  const deleteGoal = (id: string) => {
-    setSavingsGoals(savingsGoals.filter(s => s.id !== id));
-  };
-  const addFundsToGoal = (id: string, amountToAdd: number) => {
-    setSavingsGoals(savingsGoals.map(s => {
-      if (s.id === id) {
-        return { ...s, current: Math.min(s.current + amountToAdd, s.target) };
-      }
-      return s;
-    }));
-  };
-
   const addBill = () => {
     if (!newBill.name || !newBill.date || !newBill.amount) return;
     setUpcomingBills([...upcomingBills, { id: Date.now().toString(), name: newBill.name, date: newBill.date, amount: parseFloat(newBill.amount), status: 'À payer' }]);
@@ -177,50 +117,30 @@ function RouteComponent() {
 
   return (
     <PageShell>
-      <div className={`min-h-screen bg-budget-bg-start/30 theme-${currentTheme} text-budget-text font-serif p-4 sm:p-8`}>
+      <div className={\`min-h-screen bg-budget-bg-start/30 theme-\${currentTheme} text-budget-text font-serif p-4 sm:p-8\`}>
         <div className="max-w-[1400px] mx-auto space-y-6">
           
           {/* Header */}
-          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 relative">
-            <div className="flex flex-wrap items-center gap-4">
-              <CustomCalendar selectedMonthRaw={selectedMonthRaw} onMonthChange={setSelectedMonthRaw} />
-              <button 
-                onClick={() => setActiveTab('Dépenses')} 
-                className="relative bg-white/10 hover:bg-white/20 transition-all px-6 py-3 rounded-2xl backdrop-blur-md border-[2.5px] border-purple-400/80 cursor-pointer shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_20px_rgba(168,85,247,0.8)] group overflow-hidden"
-              >
-                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-500/0 via-purple-300/30 to-purple-500/0 -translate-x-full group-hover:animate-[shimmer-slide_2s_infinite]"></div>
-                 <span className="relative font-extrabold tracking-wide text-white uppercase" style={{ fontSize: '1rem' }}>
-                   Commencer
-                 </span>
-              </button>
-            </div>
-            
-            <div className="xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 flex items-center justify-center my-2 xl:my-0">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white text-center drop-shadow-2xl" style={{ textShadow: '0 8px 30px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1)', fontFamily: "'Oliver', sans-serif" }}>
-                Budget Tracker
-              </h1>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4 z-10 xl:ml-auto">
-              
-
-              <div className="flex items-center gap-2 bg-white/20 p-2 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.1)] backdrop-blur-md border border-white/30">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <h1 className="text-4xl font-bold tracking-tight">Budget Tracker</h1>
+            <div className="flex items-center gap-2 bg-white/50 p-2 rounded-full shadow-sm">
               {themes.map(t => (
                 <button
                   key={t.id}
                   onClick={() => setCurrentTheme(t.id as any)}
                   title={t.label}
-                  className={`w-6 h-6 rounded-full border border-black/10 transition-all ${currentTheme === t.id ? 'scale-110 shadow-md ring-2 ring-budget-text/20' : 'opacity-70 hover:opacity-100 hover:scale-105'}`}
+                  className={\`w-6 h-6 rounded-full border border-black/10 transition-all \${currentTheme === t.id ? 'scale-110 shadow-md ring-2 ring-budget-text/20' : 'opacity-70 hover:opacity-100 hover:scale-105'}\`}
                   style={{ backgroundColor: t.color }}
                 />
               ))}
             </div>
-            </div>
           </div>
 
-          <div className="bg-budget-bg-start/90 border border-budget-primary/20 rounded-xl p-4 flex items-center justify-center text-budget-primary-dark font-medium shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
-            <span className="text-center" style={{ fontFamily: "'Sophia', cursive", fontSize: '1.25rem' }}>
+          <div className="bg-budget-bg-start/90 border border-budget-primary/20 rounded-xl p-4 flex items-center justify-center text-budget-primary-dark font-medium text-sm italic shadow-[0_2px_10px_rgba(0,0,0,0.02)]">
+            <span className="flex items-center gap-2">
+              <span className="text-lg">📌</span> 
               Un budget consiste à dire à votre argent où aller plutôt que de vous demander où il est allé. 
+              <span className="text-budget-primary">🤍</span>
             </span>
           </div>
 
@@ -236,14 +156,13 @@ function RouteComponent() {
                     { icon: Calendar, label: "Dépenses" },
                     { icon: CreditCard, label: "Factures & Abonnements" },
                     { icon: Star, label: "Épargne" },
-                    { icon: Printer, label: "Récapitulatif" },
                   ].map((item, i) => (
                     <button 
                       key={i} 
                       onClick={() => setActiveTab(item.label)}
-                      className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${activeTab === item.label ? 'bg-budget-bg-start/80 text-budget-text font-bold' : 'text-budget-text/70 hover:bg-budget-bg-start/40 hover:text-budget-text'}`}
+                      className={\`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors \${activeTab === item.label ? 'bg-budget-bg-start/80 text-budget-text font-bold' : 'text-budget-text/70 hover:bg-budget-bg-start/40 hover:text-budget-text'}\`}
                     >
-                      <item.icon className={`w-4 h-4 ${activeTab === item.label ? 'text-budget-primary-dark' : 'text-budget-text/50'}`} strokeWidth={activeTab === item.label ? 2.5 : 2} />
+                      <item.icon className={\`w-4 h-4 \${activeTab === item.label ? 'text-budget-primary-dark' : 'text-budget-text/50'}\`} strokeWidth={activeTab === item.label ? 2.5 : 2} />
                       {item.label}
                     </button>
                   ))}
@@ -280,10 +199,10 @@ function RouteComponent() {
               {/* TOP STATS - Display across all tabs for easy viewing */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { title: "Total Revenus", amount: `${totalIncome.toLocaleString()} MAD`, sub: "Ce mois", icon: Wallet },
-                  { title: "Total Dépenses", amount: `${totalExpenses.toLocaleString()} MAD`, sub: "Ce mois", icon: ShoppingBag },
-                  { title: "Total Épargnes", amount: `${totalSavings.toLocaleString()} MAD`, sub: "Global", icon: PiggyBank },
-                  { title: "Solde", amount: `${totalBalance.toLocaleString()} MAD`, sub: "Tous comptes", icon: CreditCard },
+                  { title: "Total Revenus", amount: \`\${totalIncome.toLocaleString()} MAD\`, sub: "Ce mois", icon: Wallet },
+                  { title: "Total Dépenses", amount: \`\${totalExpenses.toLocaleString()} MAD\`, sub: "Ce mois", icon: ShoppingBag },
+                  { title: "Total Épargnes", amount: \`\${totalSavings.toLocaleString()} MAD\`, sub: "Global", icon: PiggyBank },
+                  { title: "Solde", amount: \`\${totalBalance.toLocaleString()} MAD\`, sub: "Tous comptes", icon: CreditCard },
                 ].map((stat, i) => (
                   <div key={i} className="bg-white/90 rounded-xl p-5 shadow-sm border border-budget-primary/10 flex flex-col items-center text-center relative group">
                     <h4 className="text-budget-primary-dark font-bold font-sans text-[11px] tracking-wide mb-3">{stat.title}</h4>
@@ -305,10 +224,7 @@ function RouteComponent() {
                     <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10">
                       <div className="flex justify-between items-center mb-6">
                         <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Aperçu Budget</h3>
-                        <div className="flex items-center gap-3">
-                           <button onClick={resetCurrentMonth} className="text-xs font-sans text-red-500 hover:text-red-700 underline font-semibold">Réinitialiser ce mois</button>
-                           <button onClick={() => setActiveTab('Dépenses')} className="text-xs font-sans text-budget-primary-dark underline font-semibold">Gérer</button>
-                        </div>
+                        <button onClick={() => setActiveTab('Dépenses')} className="text-xs font-sans text-budget-primary-dark underline">Gérer</button>
                       </div>
                       {donutData.length > 0 ? (
                         <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -317,7 +233,7 @@ function RouteComponent() {
                               <PieChart>
                                 <Pie data={donutData} cx="50%" cy="50%" innerRadius={60} outerRadius={80} paddingAngle={2} dataKey="value" stroke="none">
                                   {donutData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                    <Cell key={\`cell-\${index}\`} fill={entry.color} />
                                   ))}
                                 </Pie>
                               </PieChart>
@@ -350,7 +266,7 @@ function RouteComponent() {
                           <LineChart data={[{n:'Sem 1',v:500},{n:'Sem 2',v:1200},{n:'Sem 3',v:1800},{n:'Sem 4',v:totalExpenses||2580}]} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                             <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="var(--color-budget-primary)" opacity={0.3} />
                             <XAxis dataKey="n" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-budget-text)', opacity: 0.6 }} dy={10} />
-                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-budget-text)', opacity: 0.6 }} tickFormatter={(v) => `${v}`} />
+                            <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'var(--color-budget-text)', opacity: 0.6 }} tickFormatter={(v) => \`\${v}\`} />
                             <RechartsTooltip />
                             <Line type="monotone" dataKey="v" stroke="var(--color-budget-primary-dark)" strokeWidth={3} dot={{ r: 4, fill: "var(--color-budget-primary-dark)", strokeWidth: 2, stroke: "#fff" }} />
                           </LineChart>
@@ -364,8 +280,8 @@ function RouteComponent() {
                     {/* Bills */}
                     <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 relative overflow-hidden">
                       <div className="absolute top-4 right-4 text-xl opacity-80">🍓</div>
-                      <div className="flex justify-between items-center mb-6 pr-8 relative z-10">
-                        <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Factures & Abonnements</h3>
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Factures Éminentes</h3>
                         <button onClick={() => setActiveTab('Factures & Abonnements')} className="text-xs font-sans text-budget-primary-dark underline">Gérer</button>
                       </div>
                       <div className="w-full overflow-x-auto">
@@ -394,7 +310,7 @@ function RouteComponent() {
                     {/* Savings Goals */}
                     <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 relative overflow-hidden">
                       <div className="absolute top-4 right-4 text-xl opacity-80">🍓</div>
-                      <div className="flex justify-between items-center mb-6 pr-8 relative z-10">
+                      <div className="flex justify-between items-center mb-6">
                         <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Objectifs d'Épargne</h3>
                         <button onClick={() => setActiveTab('Épargne')} className="text-xs font-sans text-budget-primary-dark underline">Gérer</button>
                       </div>
@@ -408,7 +324,7 @@ function RouteComponent() {
                               <span className="text-budget-text/60 text-[10px] uppercase tracking-wider font-bold">{goal.current.toLocaleString()} / {goal.target.toLocaleString()}</span>
                             </div>
                             <div className="w-full bg-budget-bg-start/50 rounded-full h-2.5 overflow-hidden mb-1.5 flex shadow-inner">
-                              <div className="bg-budget-primary-dark rounded-full transition-all duration-1000" style={{ width: `${percent}%` }} />
+                              <div className="bg-budget-primary-dark rounded-full transition-all duration-1000" style={{ width: \`\${percent}%\` }} />
                             </div>
                             <div className="text-[10px] text-right font-bold text-budget-text">{percent}%</div>
                           </div>
@@ -542,164 +458,9 @@ function RouteComponent() {
               {activeTab === "Épargne" && (
                 <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 animate-fade-in font-sans">
                   <h2 className="text-xl font-bold mb-6 text-budget-text">Objectifs d'Épargne</h2>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div className="flex-1">
-                      <label className="block text-xs font-bold text-budget-text/70 uppercase mb-1">Nom de l'objectif</label>
-                      <input type="text" value={newGoal.name} onChange={e => setNewGoal({...newGoal, name: e.target.value})} className="w-full bg-white border border-budget-primary/20 rounded-md px-3 py-2 outline-none focus:border-budget-primary" placeholder="Ex: Voyage, Voiture..." />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-xs font-bold text-budget-text/70 uppercase mb-1">Objectif Cible (MAD)</label>
-                      <input type="number" value={newGoal.target} onChange={e => setNewGoal({...newGoal, target: e.target.value})} className="w-full bg-white border border-budget-primary/20 rounded-md px-3 py-2 outline-none focus:border-budget-primary" placeholder="0.00" />
-                    </div>
-                    <div className="flex items-end">
-                      <button onClick={addGoal} className="w-full sm:w-auto bg-budget-accent hover:bg-budget-accent/90 text-white font-bold py-2 px-6 rounded-md transition-colors flex items-center justify-center gap-2">
-                        <Plus size={18} /> Ajouter
-                      </button>
-                    </div>
+                  <div className="p-6 text-center italic text-budget-text/60 border border-budget-primary/10 rounded-lg bg-budget-bg-start/10">
+                    Module d'édition des objectifs à venir.
                   </div>
-
-                  <div className="space-y-6">
-                    {savingsGoals.map(sg => {
-                      const percentage = Math.min(100, Math.round((sg.current / sg.target) * 100));
-                      return (
-                        <div key={sg.id} className="bg-white border border-budget-primary/10 rounded-xl p-5 shadow-sm relative">
-                          <button onClick={() => deleteGoal(sg.id)} className="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors">
-                            <Trash2 size={18} />
-                          </button>
-                          <div className="flex justify-between items-center mb-2 pr-8">
-                            <h3 className="font-bold text-budget-text text-lg">{sg.name}</h3>
-                            <div className="text-right">
-                              <span className="text-budget-primary-dark font-extrabold text-xl">{sg.current.toLocaleString()}</span>
-                              <span className="text-budget-text/50 text-sm"> / {sg.target.toLocaleString()} MAD</span>
-                            </div>
-                          </div>
-                          <div className="w-full bg-gray-100 rounded-full h-3 mb-4 overflow-hidden relative">
-                            <div className="bg-gradient-to-r from-budget-bg-start to-budget-primary h-3 rounded-full transition-all duration-1000 relative" style={{ width: `${percentage}%` }}>
-                              <div className="absolute inset-0 bg-white/20" style={{ backgroundSize: '1rem 1rem', backgroundImage: 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)' }}></div>
-                            </div>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-budget-primary-dark bg-budget-bg-start/20 px-2 py-1 rounded-full">{percentage}% Atteint</span>
-                            <div className="flex items-center gap-2">
-                               <button onClick={() => addFundsToGoal(sg.id, 100)} className="text-xs bg-budget-primary/10 hover:bg-budget-primary/20 text-budget-primary-dark font-semibold py-1 px-3 rounded-md transition-colors">+ 100</button>
-                               <button onClick={() => addFundsToGoal(sg.id, 500)} className="text-xs bg-budget-primary/10 hover:bg-budget-primary/20 text-budget-primary-dark font-semibold py-1 px-3 rounded-md transition-colors">+ 500</button>
-                               <button onClick={() => addFundsToGoal(sg.id, 1000)} className="text-xs bg-budget-primary/10 hover:bg-budget-primary/20 text-budget-primary-dark font-semibold py-1 px-3 rounded-md transition-colors">+ 1000</button>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                    {savingsGoals.length === 0 && <div className="text-center italic text-budget-text/50 p-6">Aucun objectif d'épargne.</div>}
-                  </div>
-                </div>
-              )}
-
-              {/* View: RECAPITULATIF */}
-              {activeTab === "Récapitulatif" && (
-                <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 animate-fade-in font-sans">
-                  <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-bold text-budget-text flex items-center gap-2 uppercase tracking-wide">
-                      EXPENSES <span className="text-budget-primary">🤍</span>
-                    </h2>
-                    <button 
-                      onClick={() => window.print()}
-                      className="flex items-center gap-2 bg-budget-primary text-white px-4 py-2 rounded-lg font-bold hover:bg-budget-primary-dark transition text-sm shadow-sm"
-                    >
-                      <Printer size={16} /> Imprimer
-                    </button>
-                  </div>
-                  
-                  <div className="w-full overflow-x-auto rounded-lg border border-budget-primary/20 bg-white" id="printable-recap">
-                    <table className="w-full text-left font-sans text-sm print-table">
-                      <thead>
-                        <tr className="bg-budget-primary/20 text-budget-text font-extrabold uppercase tracking-widest text-[11px] border-b border-budget-primary/30 print-header">
-                          <th className="py-3 px-4 font-extrabold">Catégorie</th>
-                          <th className="py-3 px-4 font-extrabold text-right">Budgeté (MAD)</th>
-                          <th className="py-3 px-4 font-extrabold text-right">Actuel (MAD)</th>
-                          <th className="py-3 px-4 font-extrabold text-right">Différence</th>
-                          <th className="py-3 px-4 font-extrabold text-center print-hide">Besoins / Envies</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {categories.map((cat, i) => {
-                          const catExpenses = expenses.filter(e => e.categoryId === cat.id).reduce((a, b) => a + b.amount, 0);
-                          const diff = cat.limit - catExpenses;
-                          return (
-                            <tr key={cat.id} className="border-b border-budget-primary/10 last:border-0 hover:bg-budget-bg-start/10 transition-colors bg-white">
-                              <td className="py-3 px-4 font-semibold flex items-center gap-3 text-budget-text">
-                                <div className="w-3 h-3 rounded-full print-hide" style={{ backgroundColor: cat.color }}></div> 
-                                {cat.name}
-                              </td>
-                              <td className="py-3 px-4 text-right font-medium">{cat.limit.toLocaleString()}</td>
-                              <td className="py-3 px-4 text-right font-bold text-budget-text">{catExpenses.toLocaleString()}</td>
-                              <td className="py-3 px-4 text-right font-medium">
-                                <span className={diff >= 0 ? "text-emerald-600 print-emerald" : "text-red-500 print-red"}>
-                                  {diff > 0 ? '+' : ''}{diff.toLocaleString()}
-                                </span>
-                              </td>
-                              <td className="py-3 px-4 text-center print-hide">
-                                <div className="flex items-center justify-center gap-4 text-[10px] font-bold text-budget-text/70 uppercase">
-                                  <label className="flex items-center gap-1 cursor-pointer">
-                                    <input type="radio" name={`nw-${cat.id}`} defaultChecked={i % 2 === 0} className="w-3 h-3 accent-budget-primary" /> Need
-                                  </label>
-                                  <label className="flex items-center gap-1 cursor-pointer">
-                                    <input type="radio" name={`nw-${cat.id}`} defaultChecked={i % 2 !== 0} className="w-3 h-3 accent-budget-primary" /> Want
-                                  </label>
-                                </div>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                      <tfoot>
-                        <tr className="bg-budget-primary/10 font-bold border-t-2 border-budget-primary/30">
-                          <td className="py-4 px-4 text-budget-text text-xs tracking-wider uppercase">Total Dépenses</td>
-                          <td className="py-4 px-4 text-right text-budget-text">{categories.reduce((a,b)=>a+b.limit,0).toLocaleString()}</td>
-                          <td className="py-4 px-4 text-right font-black text-budget-primary-dark">{totalExpenses.toLocaleString()}</td>
-                          <td className="py-4 px-4 text-right text-budget-text">
-                            -
-                          </td>
-                          <td className="print-hide"></td>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                  
-                  <style>{`
-                    @media print {
-                      body * {
-                        visibility: hidden;
-                      }
-                      .print-hide { display: none !important; }
-                      body { background: white; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-                      #printable-recap, #printable-recap * {
-                         visibility: visible;
-                      }
-                      #printable-recap {
-                         position: absolute;
-                         left: 0;
-                         top: 0;
-                         width: 100vw;
-                         padding: 2cm;
-                         margin: 0;
-                         border: none;
-                         box-shadow: none;
-                      }
-                      .print-header { background-color: #f472b620 !important; }
-                      .print-emerald { color: #059669 !important; }
-                      .print-red { color: #ef4444 !important; }
-                    }
-                    /* Styling the month input */
-                    .custom-month-input::-webkit-calendar-picker-indicator {
-                       filter: invert(1) brightness(100);
-                       cursor: pointer;
-                       opacity: 0.8;
-                    }
-                    .custom-month-input::-webkit-calendar-picker-indicator:hover {
-                       opacity: 1;
-                    }
-                  `}</style>
                 </div>
               )}
 
@@ -711,3 +472,6 @@ function RouteComponent() {
     </PageShell>
   );
 }
+`
+
+fs.writeFileSync('src/routes/outils/budget-planner.tsx', code);

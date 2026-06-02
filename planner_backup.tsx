@@ -27,16 +27,14 @@ import {
   CartesianGrid,
   Tooltip as RechartsTooltip,
 } from "recharts";
-import { CustomCalendar } from "../../components/CustomCalendar";
 
 export const Route = createFileRoute("/outils/budget-planner")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const [currentTheme, setCurrentTheme] = useState<"purple" | "pink" | "red" | "blue" | "black">("purple");
+  const [currentTheme, setCurrentTheme] = useState<"pink" | "red" | "blue" | "black">("pink");
   const themes = [
-    { id: "purple", label: "Violet", color: "#8b5cf6" },
     { id: "pink", label: "Rose", color: "#f472b6" },
     { id: "red", label: "Rouge", color: "#f87171" },
     { id: "blue", label: "Bleu", color: "#8EB1D1" },
@@ -46,80 +44,39 @@ function RouteComponent() {
   const [activeTab, setActiveTab] = useState("Dashboard");
 
   // STATE LOGIC
-  const [selectedMonthRaw, setSelectedMonthRaw] = useState(() => {
-    const d = new Date();
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-  });
+  const [incomes, setIncomes] = useState<{id: string, source: string, amount: number}[]>([
+    { id: '1', source: 'Salaire', amount: 8000 }
+  ]);
+  const [newIncome, setNewIncome] = useState({ source: '', amount: '' });
 
-  const defaultCategories = [
+  const [categories, setCategories] = useState<{id: string, name: string, color: string, limit: number}[]>([
     { id: 'c1', name: "Logement", color: "var(--budget-primary-dark)", limit: 3000 },
     { id: 'c2', name: "Alimentation", color: "var(--budget-primary)", limit: 2000 },
     { id: 'c3', name: "Transport", color: "var(--budget-bg-end)", limit: 1000 },
     { id: 'c4', name: "Shopping", color: "var(--budget-bg-mid)", limit: 800 },
     { id: 'c5', name: "Factures", color: "var(--budget-accent)", limit: 500 },
     { id: 'c6', name: "Divers", color: "var(--budget-bg-start)", limit: 500 },
-  ];
+  ]);
 
-  const defaultSavingsGoals = [
+  const [expenses, setExpenses] = useState<{id: string, categoryId: string, name: string, amount: number}[]>([
+    { id: 'e1', categoryId: 'c1', name: 'Loyer', amount: 2500 },
+    { id: 'e2', categoryId: 'c2', name: 'Courses', amount: 1500 },
+    { id: 'e3', categoryId: 'c3', name: 'Essence', amount: 400 },
+  ]);
+  const [newExpense, setNewExpense] = useState({ categoryId: 'c1', name: '', amount: '' });
+
+  const [upcomingBills, setUpcomingBills] = useState<{id: string, name: string, date: string, amount: number, status: string}[]>([
+    { id: 'b1', name: "Loyer", date: "25 May, 2026", amount: 2500, status: "À payer" },
+    { id: 'b2', name: "Électricité", date: "27 May, 2026", amount: 350, status: "À payer" },
+    { id: 'b3', name: "Internet", date: "28 May, 2026", amount: 250, status: "À payer" },
+  ]);
+  const [newBill, setNewBill] = useState({ name: '', date: '', amount: '' });
+
+  const [savingsGoals, setSavingsGoals] = useState<{id: string, name: string, current: number, target: number}[]>([
     { id: 's1', name: "Fonds d'urgence", current: 5000, target: 20000 },
     { id: 's2', name: "Voyage d'été", current: 3000, target: 8000 },
     { id: 's3', name: "Nouvel Ordinateur", current: 1500, target: 15000 },
-  ];
-
-  const [dataMap, setDataMap] = useState<Record<string, any>>(() => {
-    const d = new Date();
-    const current = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-    return {
-      [current]: {
-        incomes: [{ id: '1', source: 'Salaire', amount: 8000 }],
-        expenses: [
-          { id: 'e1', categoryId: 'c1', name: 'Loyer', amount: 2500 },
-          { id: 'e2', categoryId: 'c2', name: 'Courses', amount: 1500 },
-          { id: 'e3', categoryId: 'c3', name: 'Essence', amount: 400 },
-        ],
-        upcomingBills: [
-          { id: 'b1', name: "Loyer", date: "25 May, 2026", amount: 2500, status: "À payer" },
-          { id: 'b2', name: "Électricité", date: "27 May, 2026", amount: 350, status: "À payer" },
-          { id: 'b3', name: "Internet", date: "28 May, 2026", amount: 250, status: "À payer" },
-        ]
-      }
-    };
-  });
-
-  const currentData = dataMap[selectedMonthRaw] || { incomes: [], expenses: [], upcomingBills: [] };
-  const incomes = currentData.incomes;
-  const expenses = currentData.expenses;
-  const upcomingBills = currentData.upcomingBills;
-
-  const updateDataForMonth = (key: string, newValueFn: any) => {
-    setDataMap(prev => {
-      const existing = prev[selectedMonthRaw] || { incomes: [], expenses: [], upcomingBills: [] };
-      const nextValue = typeof newValueFn === 'function' ? newValueFn(existing[key]) : newValueFn;
-      return {
-        ...prev,
-        [selectedMonthRaw]: {
-          ...existing,
-          [key]: nextValue
-        }
-      };
-    });
-  };
-
-  const setIncomes = (val: any) => updateDataForMonth('incomes', val);
-  const setExpenses = (val: any) => updateDataForMonth('expenses', val);
-  const setUpcomingBills = (val: any) => updateDataForMonth('upcomingBills', val);
-
-  const [newIncome, setNewIncome] = useState({ source: '', amount: '' });
-  const [categories, setCategories] = useState(defaultCategories);
-  const [newExpense, setNewExpense] = useState({ categoryId: 'c1', name: '', amount: '' });
-  const [newBill, setNewBill] = useState({ name: '', date: '', amount: '' });
-  const [savingsGoals, setSavingsGoals] = useState(defaultSavingsGoals);
-  const [newGoal, setNewGoal] = useState({ name: '', target: '' });
-
-  const resetCurrentMonth = () => {
-    setDataMap(prev => ({ ...prev, [selectedMonthRaw]: { incomes: [], expenses: [], upcomingBills: [] } }));
-  };
-
+  ]);
 
   // CALCULATIONS
   const totalIncome = incomes.reduce((acc, curr) => acc + curr.amount, 0);
@@ -130,7 +87,7 @@ function RouteComponent() {
   const monthlySavingsRate = totalIncome > 0 ? Math.round(((totalIncome - totalExpenses) / totalIncome) * 100) : 0;
 
   // Chart Data
-  // currentDate removed
+  const currentDate = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
   const donutData = categories.map(cat => {
     const catExpenses = expenses.filter(e => e.categoryId === cat.id).reduce((a, b) => a + b.amount, 0);
     return { name: cat.name, value: catExpenses, color: cat.color };
@@ -151,23 +108,6 @@ function RouteComponent() {
   };
   const deleteExpense = (id: string) => setExpenses(expenses.filter(e => e.id !== id));
 
-  const addGoal = () => {
-    if (!newGoal.name || !newGoal.target) return;
-    setSavingsGoals([...savingsGoals, { id: Date.now().toString(), name: newGoal.name, current: 0, target: parseFloat(newGoal.target) }]);
-    setNewGoal({ name: '', target: '' });
-  };
-  const deleteGoal = (id: string) => {
-    setSavingsGoals(savingsGoals.filter(s => s.id !== id));
-  };
-  const addFundsToGoal = (id: string, amountToAdd: number) => {
-    setSavingsGoals(savingsGoals.map(s => {
-      if (s.id === id) {
-        return { ...s, current: Math.min(s.current + amountToAdd, s.target) };
-      }
-      return s;
-    }));
-  };
-
   const addBill = () => {
     if (!newBill.name || !newBill.date || !newBill.amount) return;
     setUpcomingBills([...upcomingBills, { id: Date.now().toString(), name: newBill.name, date: newBill.date, amount: parseFloat(newBill.amount), status: 'À payer' }]);
@@ -181,30 +121,18 @@ function RouteComponent() {
         <div className="max-w-[1400px] mx-auto space-y-6">
           
           {/* Header */}
-          <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-6 relative">
-            <div className="flex flex-wrap items-center gap-4">
-              <CustomCalendar selectedMonthRaw={selectedMonthRaw} onMonthChange={setSelectedMonthRaw} />
-              <button 
-                onClick={() => setActiveTab('Dépenses')} 
-                className="relative bg-white/10 hover:bg-white/20 transition-all px-6 py-3 rounded-2xl backdrop-blur-md border-[2.5px] border-purple-400/80 cursor-pointer shadow-[0_0_15px_rgba(168,85,247,0.5)] hover:shadow-[0_0_20px_rgba(168,85,247,0.8)] group overflow-hidden"
-              >
-                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-500/0 via-purple-300/30 to-purple-500/0 -translate-x-full group-hover:animate-[shimmer-slide_2s_infinite]"></div>
-                 <span className="relative font-extrabold tracking-wide text-white uppercase" style={{ fontSize: '1rem' }}>
-                   Commencer
-                 </span>
-              </button>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 relative">
+            <div className="text-xl sm:text-2xl font-bold tracking-tight text-budget-text uppercase bg-white/40 px-4 py-2 rounded-xl backdrop-blur-sm border border-budget-primary/20 w-fit" style={{ fontFamily: "'Setta', cursive" }}>
+              {currentDate}
             </div>
             
-            <div className="xl:absolute xl:left-1/2 xl:top-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2 flex items-center justify-center my-2 xl:my-0">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-black tracking-tighter text-white text-center drop-shadow-2xl" style={{ textShadow: '0 8px 30px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1)', fontFamily: "'Oliver', sans-serif" }}>
+            <div className="md:absolute md:left-1/2 md:top-1/2 md:-translate-x-1/2 md:-translate-y-1/2 flex items-center justify-center my-4 md:my-0">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-white text-center" style={{ textShadow: '0 4px 15px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.1)', fontFamily: "'Oliver', sans-serif" }}>
                 Budget Tracker
               </h1>
             </div>
 
-            <div className="flex flex-wrap items-center gap-4 z-10 xl:ml-auto">
-              
-
-              <div className="flex items-center gap-2 bg-white/20 p-2 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.1)] backdrop-blur-md border border-white/30">
+            <div className="flex items-center gap-2 bg-white/70 p-2 rounded-full shadow-sm z-10 backdrop-blur-md w-fit md:ml-auto">
               {themes.map(t => (
                 <button
                   key={t.id}
@@ -214,7 +142,6 @@ function RouteComponent() {
                   style={{ backgroundColor: t.color }}
                 />
               ))}
-            </div>
             </div>
           </div>
 
@@ -305,10 +232,7 @@ function RouteComponent() {
                     <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10">
                       <div className="flex justify-between items-center mb-6">
                         <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Aperçu Budget</h3>
-                        <div className="flex items-center gap-3">
-                           <button onClick={resetCurrentMonth} className="text-xs font-sans text-red-500 hover:text-red-700 underline font-semibold">Réinitialiser ce mois</button>
-                           <button onClick={() => setActiveTab('Dépenses')} className="text-xs font-sans text-budget-primary-dark underline font-semibold">Gérer</button>
-                        </div>
+                        <button onClick={() => setActiveTab('Dépenses')} className="text-xs font-sans text-budget-primary-dark underline">Gérer</button>
                       </div>
                       {donutData.length > 0 ? (
                         <div className="flex flex-col sm:flex-row items-center gap-6">
@@ -364,8 +288,8 @@ function RouteComponent() {
                     {/* Bills */}
                     <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 relative overflow-hidden">
                       <div className="absolute top-4 right-4 text-xl opacity-80">🍓</div>
-                      <div className="flex justify-between items-center mb-6 pr-8 relative z-10">
-                        <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Factures & Abonnements</h3>
+                      <div className="flex justify-between items-center mb-6">
+                        <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Factures Éminentes</h3>
                         <button onClick={() => setActiveTab('Factures & Abonnements')} className="text-xs font-sans text-budget-primary-dark underline">Gérer</button>
                       </div>
                       <div className="w-full overflow-x-auto">
@@ -394,7 +318,7 @@ function RouteComponent() {
                     {/* Savings Goals */}
                     <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 relative overflow-hidden">
                       <div className="absolute top-4 right-4 text-xl opacity-80">🍓</div>
-                      <div className="flex justify-between items-center mb-6 pr-8 relative z-10">
+                      <div className="flex justify-between items-center mb-6">
                         <h3 className="text-budget-primary-dark font-bold font-sans text-sm tracking-wide">Objectifs d'Épargne</h3>
                         <button onClick={() => setActiveTab('Épargne')} className="text-xs font-sans text-budget-primary-dark underline">Gérer</button>
                       </div>
@@ -542,55 +466,8 @@ function RouteComponent() {
               {activeTab === "Épargne" && (
                 <div className="bg-white/90 rounded-xl p-6 shadow-sm border border-budget-primary/10 animate-fade-in font-sans">
                   <h2 className="text-xl font-bold mb-6 text-budget-text">Objectifs d'Épargne</h2>
-                  
-                  <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                    <div className="flex-1">
-                      <label className="block text-xs font-bold text-budget-text/70 uppercase mb-1">Nom de l'objectif</label>
-                      <input type="text" value={newGoal.name} onChange={e => setNewGoal({...newGoal, name: e.target.value})} className="w-full bg-white border border-budget-primary/20 rounded-md px-3 py-2 outline-none focus:border-budget-primary" placeholder="Ex: Voyage, Voiture..." />
-                    </div>
-                    <div className="flex-1">
-                      <label className="block text-xs font-bold text-budget-text/70 uppercase mb-1">Objectif Cible (MAD)</label>
-                      <input type="number" value={newGoal.target} onChange={e => setNewGoal({...newGoal, target: e.target.value})} className="w-full bg-white border border-budget-primary/20 rounded-md px-3 py-2 outline-none focus:border-budget-primary" placeholder="0.00" />
-                    </div>
-                    <div className="flex items-end">
-                      <button onClick={addGoal} className="w-full sm:w-auto bg-budget-accent hover:bg-budget-accent/90 text-white font-bold py-2 px-6 rounded-md transition-colors flex items-center justify-center gap-2">
-                        <Plus size={18} /> Ajouter
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-6">
-                    {savingsGoals.map(sg => {
-                      const percentage = Math.min(100, Math.round((sg.current / sg.target) * 100));
-                      return (
-                        <div key={sg.id} className="bg-white border border-budget-primary/10 rounded-xl p-5 shadow-sm relative">
-                          <button onClick={() => deleteGoal(sg.id)} className="absolute top-4 right-4 text-gray-300 hover:text-red-500 transition-colors">
-                            <Trash2 size={18} />
-                          </button>
-                          <div className="flex justify-between items-center mb-2 pr-8">
-                            <h3 className="font-bold text-budget-text text-lg">{sg.name}</h3>
-                            <div className="text-right">
-                              <span className="text-budget-primary-dark font-extrabold text-xl">{sg.current.toLocaleString()}</span>
-                              <span className="text-budget-text/50 text-sm"> / {sg.target.toLocaleString()} MAD</span>
-                            </div>
-                          </div>
-                          <div className="w-full bg-gray-100 rounded-full h-3 mb-4 overflow-hidden relative">
-                            <div className="bg-gradient-to-r from-budget-bg-start to-budget-primary h-3 rounded-full transition-all duration-1000 relative" style={{ width: `${percentage}%` }}>
-                              <div className="absolute inset-0 bg-white/20" style={{ backgroundSize: '1rem 1rem', backgroundImage: 'linear-gradient(45deg,rgba(255,255,255,.15) 25%,transparent 25%,transparent 50%,rgba(255,255,255,.15) 50%,rgba(255,255,255,.15) 75%,transparent 75%,transparent)' }}></div>
-                            </div>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-xs font-bold text-budget-primary-dark bg-budget-bg-start/20 px-2 py-1 rounded-full">{percentage}% Atteint</span>
-                            <div className="flex items-center gap-2">
-                               <button onClick={() => addFundsToGoal(sg.id, 100)} className="text-xs bg-budget-primary/10 hover:bg-budget-primary/20 text-budget-primary-dark font-semibold py-1 px-3 rounded-md transition-colors">+ 100</button>
-                               <button onClick={() => addFundsToGoal(sg.id, 500)} className="text-xs bg-budget-primary/10 hover:bg-budget-primary/20 text-budget-primary-dark font-semibold py-1 px-3 rounded-md transition-colors">+ 500</button>
-                               <button onClick={() => addFundsToGoal(sg.id, 1000)} className="text-xs bg-budget-primary/10 hover:bg-budget-primary/20 text-budget-primary-dark font-semibold py-1 px-3 rounded-md transition-colors">+ 1000</button>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                    {savingsGoals.length === 0 && <div className="text-center italic text-budget-text/50 p-6">Aucun objectif d'épargne.</div>}
+                  <div className="p-6 text-center italic text-budget-text/60 border border-budget-primary/10 rounded-lg bg-budget-bg-start/10">
+                    Module d'édition des objectifs à venir.
                   </div>
                 </div>
               )}
@@ -689,15 +566,6 @@ function RouteComponent() {
                       .print-header { background-color: #f472b620 !important; }
                       .print-emerald { color: #059669 !important; }
                       .print-red { color: #ef4444 !important; }
-                    }
-                    /* Styling the month input */
-                    .custom-month-input::-webkit-calendar-picker-indicator {
-                       filter: invert(1) brightness(100);
-                       cursor: pointer;
-                       opacity: 0.8;
-                    }
-                    .custom-month-input::-webkit-calendar-picker-indicator:hover {
-                       opacity: 1;
                     }
                   `}</style>
                 </div>

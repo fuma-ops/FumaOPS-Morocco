@@ -55,7 +55,7 @@ const nav = [
 export function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-[999] glass w-full">
+    <header className="sticky top-0 z-[999] bg-[#1d0b30]/80 backdrop-blur-xl border-b border-purple-500/20 shadow-[0_4px_30px_rgba(0,0,0,0.5)] w-full">
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-white/5">
         <div className="h-full w-1/3 gradient-primary blur-[1px] animate-navbar-line relative" />
         <div className="absolute top-0 left-0 h-full w-1/4 gradient-primary animate-navbar-line" />
@@ -94,7 +94,7 @@ export function Header() {
               )}
 
               {n.children && (
-                <div className="absolute top-full left-0 mt-2 w-56 rounded-2xl glass border border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col p-2 shadow-xl z-[999]">
+                <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl bg-[#1d0b30]/80 backdrop-blur-xl border border-purple-400/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col p-2 shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-[999]">
                   {n.children.map((child) =>
                     child.disabled ? (
                       <span
