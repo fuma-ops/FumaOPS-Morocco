@@ -74,7 +74,7 @@ export function Header() {
             Fuma<span className="gradient-text">OPS</span>
           </span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1">
+        <nav className="hidden xl:flex items-center gap-1">
           {nav.map((n) => (
             <div key={n.label} className="relative group">
               {n.to ? (
@@ -121,13 +121,13 @@ export function Header() {
         <div className="flex items-center gap-2">
           <Link
             to="/contact"
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-full gradient-primary text-white text-sm font-bold glow hover:scale-105 transition-transform"
+            className="hidden xl:inline-flex items-center gap-2 px-5 py-2.5 rounded-full gradient-primary text-white text-sm font-bold glow hover:scale-105 transition-transform"
           >
             Démarrer
           </Link>
           <button
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden h-10 w-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors text-white"
+            className="xl:hidden h-10 w-10 rounded-full glass flex items-center justify-center hover:bg-white/10 transition-colors text-white"
             aria-label="Menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -135,7 +135,7 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <div className="md:hidden border-t border-white/10 animate-fade-up relative z-10 bg-[#1d0b30]/95 backdrop-blur-2xl">
+        <div className="xl:hidden border-t border-white/10 animate-fade-up relative z-10 bg-[#1d0b30]/95 backdrop-blur-2xl">
           <nav className="px-4 py-4 flex flex-col gap-1">
             {nav.map((n) => (
               <div key={n.label} className="flex flex-col">
@@ -308,7 +308,7 @@ export function FloatingWhatsApp() {
       href="https://wa.me/212646340729"
       target="_blank"
       rel="noopener"
-      className="fixed bottom-24 right-5 md:bottom-6 md:right-6 z-[1001] h-14 w-14 rounded-full gradient-primary flex items-center justify-center glow hover:scale-110 transition-transform group"
+      className="fixed bottom-24 right-5 sm:bottom-6 sm:right-6 z-[1001] h-14 w-14 rounded-full gradient-primary flex items-center justify-center glow hover:scale-110 transition-transform group"
       aria-label="WhatsApp"
     >
       <MessageCircle className="h-6 w-6 text-white group-hover:rotate-12 transition-transform" />
