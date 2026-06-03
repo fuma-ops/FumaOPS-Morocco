@@ -20,6 +20,7 @@ export const Route = createFileRoute("/services")({
         content:
           "Tout ce qui est inclus : gestion produits, commandes, WhatsApp, dashboard, photos, responsive.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Services,

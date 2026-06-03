@@ -11,6 +11,7 @@ export const Route = createFileRoute("/tarifs")({
         content:
           "Paiement unique, à partir de 2000 DH. Pas d'abonnement. Découvrez si l'offre est faite pour vous.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Tarifs,

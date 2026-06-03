@@ -11,6 +11,7 @@ export const Route = createFileRoute("/portfolio")({
         content:
           "Découvrez nos sites e-commerce : bijouterie, mode, déco, épicerie, restauration, enfants.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Portfolio,

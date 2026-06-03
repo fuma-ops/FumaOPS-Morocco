@@ -11,6 +11,7 @@ export const Route = createFileRoute("/about")({
         content:
           "L'histoire de FumaOPS : une agence freelance internationale avec 7 ans d'expérience.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: About,

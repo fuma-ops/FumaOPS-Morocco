@@ -91,6 +91,14 @@ function RouteComponent() {
       document.head.appendChild(canonical);
     }
     canonical.setAttribute("href", "https://fumaops.com/outils/compresseur-image");
+    
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (!metaRobots) {
+      metaRobots = document.createElement("meta");
+      metaRobots.setAttribute("name", "robots");
+      document.head.appendChild(metaRobots);
+    }
+    metaRobots.setAttribute("content", "index, follow");
 
     const jsonLdData = {
       "@context": "https://schema.org",

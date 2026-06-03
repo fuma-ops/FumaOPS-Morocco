@@ -10,6 +10,7 @@ export const Route = createFileRoute("/outils/")({
         content:
           "Découvrez nos outils gratuits : calculateur de prix, générateur de meta tags, factures, QR codes et plus.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: OutilsIndex,

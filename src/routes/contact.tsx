@@ -12,6 +12,7 @@ export const Route = createFileRoute("/contact")({
         content:
           "Contactez FumaOPS pour démarrer votre site e-commerce. Redirection WhatsApp pour un traitement direct.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Contact,

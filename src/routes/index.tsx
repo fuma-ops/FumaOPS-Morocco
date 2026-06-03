@@ -23,6 +23,7 @@ export const Route = createFileRoute("/")({
         content:
           "Un site e-commerce conçu sur mesure, livré en 3 jours. Paiement unique. Pas d'abonnement. Le site reste à toi à vie.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Home,

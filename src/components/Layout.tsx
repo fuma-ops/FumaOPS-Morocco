@@ -94,7 +94,7 @@ export function Header() {
               )}
 
               {n.children && (
-                <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl bg-[#1d0b30]/80 backdrop-blur-xl border border-purple-400/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col p-2 shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-[999]">
+                <div className="absolute top-full left-0 mt-2 w-64 rounded-2xl bg-[#1d0b30]/95 backdrop-blur-2xl border border-purple-400/30 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all flex flex-col p-2 shadow-[0_8px_30px_rgba(0,0,0,0.5)] z-[999]">
                   {n.children.map((child) =>
                     child.disabled ? (
                       <span
@@ -135,7 +135,7 @@ export function Header() {
         </div>
       </div>
       {open && (
-        <div className="md:hidden border-t border-white/10 animate-fade-up relative z-10 glass">
+        <div className="md:hidden border-t border-white/10 animate-fade-up relative z-10 bg-[#1d0b30]/95 backdrop-blur-2xl">
           <nav className="px-4 py-4 flex flex-col gap-1">
             {nav.map((n) => (
               <div key={n.label} className="flex flex-col">

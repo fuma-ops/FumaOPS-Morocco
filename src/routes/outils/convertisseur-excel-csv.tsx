@@ -158,6 +158,14 @@ function RouteComponent() {
       document.head.appendChild(canonical);
     }
     canonical.setAttribute("href", "https://fumaops.com/outils/convertisseur-excel-csv");
+    
+    let metaRobots = document.querySelector('meta[name="robots"]');
+    if (!metaRobots) {
+      metaRobots = document.createElement("meta");
+      metaRobots.setAttribute("name", "robots");
+      document.head.appendChild(metaRobots);
+    }
+    metaRobots.setAttribute("content", "index, follow");
 
     // JSON-LD WebApplication and FAQ markup
     const jsonLdData = {

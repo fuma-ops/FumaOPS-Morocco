@@ -9,6 +9,7 @@ export const Route = createFileRoute("/processus")({
         name: "description",
         content: "6 étapes simples : du contact au lancement de ton site e-commerce en 3 jours.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Processus,

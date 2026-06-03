@@ -10,6 +10,7 @@ export const Route = createFileRoute("/blog/")({
         content:
           "Conseils, guides et astuces pour réussir votre e-commerce au Maroc : COD, WhatsApp, SEO et plus.",
       },
+      { name: "robots", content: "index, follow" },
     ],
   }),
   component: Blog,
